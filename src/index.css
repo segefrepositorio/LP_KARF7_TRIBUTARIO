@@ -118,11 +118,54 @@ All colors MUST be HSL.
     @apply border-border;
   }
 
-  body {
+  html, body {
     @apply bg-background text-foreground font-sans;
+    overflow-x: hidden;
+    max-width: 100vw;
   }
 
-  /* Animações jurídicas */
+  /* Prevenir overflow horizontal */
+  * {
+    box-sizing: border-box;
+  }
+
+  .container, .max-w-7xl, .max-w-6xl, .max-w-5xl, .max-w-4xl, .max-w-3xl {
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+
+  /* Ocultar segunda barra de scroll no desktop */
+  @media (min-width: 1024px) {
+    body {
+      overflow-y: scroll;
+    }
+    
+    /* Ocultar scrollbar secundária */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    
+    ::-webkit-scrollbar-thumb {
+      background: hsl(var(--border));
+      border-radius: 4px;
+    }
+    
+    ::-webkit-scrollbar-thumb:hover {
+      background: hsl(var(--muted-foreground));
+    }
+    
+    /* Para Firefox */
+    * {
+      scrollbar-width: thin;
+      scrollbar-color: hsl(var(--border)) transparent;
+    }
+  }
+
+  /* Animações jurídicas - OTIMIZADO MOBILE */
   .animate-fade-in {
     animation: fadeIn 0.6s ease-out;
   }
@@ -139,18 +182,58 @@ All colors MUST be HSL.
     animation: counter 2s ease-out;
   }
 
-  /* Efeitos de hover */
+  /* Reduzir animações em dispositivos com preferência por movimento reduzido */
+  @media (prefers-reduced-motion: reduce) {
+    .animate-fade-in,
+    .animate-scale-in,
+    .animate-slide-up,
+    .animate-counter {
+      animation: none;
+    }
+    
+    .hover-lift {
+      transition: none;
+    }
+  }
+
+  /* Animações mais suaves em mobile */
+  @media (max-width: 768px) {
+    .animate-fade-in {
+      animation: fadeInMobile 0.4s ease-out;
+    }
+
+    .animate-scale-in {
+      animation: scaleInMobile 0.3s ease-out;
+    }
+
+    .animate-slide-up {
+      animation: slideUpMobile 0.5s ease-out;
+    }
+  }
+
+  /* Efeitos de hover - OTIMIZADO MOBILE */
   .hover-lift {
     transition: var(--transition-smooth);
   }
 
-  .hover-lift:hover {
-    transform: translateY(-4px);
-    box-shadow: var(--shadow-elevated);
+  /* Hover effects apenas em dispositivos que suportam hover */
+  @media (hover: hover) {
+    .hover-lift:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-elevated);
+    }
+
+    .hover-glow:hover {
+      box-shadow: 0 0 20px hsl(var(--secondary) / 0.3);
+    }
   }
 
-  .hover-glow:hover {
-    box-shadow: 0 0 20px hsl(var(--secondary) / 0.3);
+  /* Efeitos alternativos para touch devices */
+  @media (hover: none) {
+    .hover-lift:active {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-card);
+    }
   }
 
   /* Underline animation para links */
@@ -286,4 +369,50 @@ All colors MUST be HSL.
   animation: sonar 2s ease-out infinite 1s;
   z-index: -1;
   pointer-events: none;
+}
+
+/* Animações otimizadas para mobile */
+@keyframes fadeInMobile {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scaleInMobile {
+  from {
+    opacity: 0;
+    transform: scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes slideUpMobile {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Otimizações de performance para mobile */
+@media (max-width: 768px) {
+  .pulse-animation {
+    animation: pulse 3s ease-in-out infinite;
+  }
+  
+  .sonar-animation::before,
+  .sonar-animation::after {
+    animation-duration: 3s;
+  }
 }
