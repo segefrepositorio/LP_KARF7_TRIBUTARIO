@@ -142,6 +142,18 @@ npm run type-check
 npm run build
 ```
 
+### Erro "Rollup failed to resolve import 'gsap'"
+
+Se você encontrar este erro durante o deploy na Vercel:
+
+1. **Causa**: GSAP e ScrollReveal não estão listados no package.json
+2. **Solução**: As dependências já foram adicionadas ao package.json:
+   ```json
+   "gsap": "^3.12.2",
+   "scrollreveal": "^4.0.9"
+   ```
+3. **Verificação**: Execute `npm install` para garantir que estão instaladas
+
 ### Problemas de Routing
 
 O arquivo `vercel.json` já está configurado para SPAs. Se houver problemas:
