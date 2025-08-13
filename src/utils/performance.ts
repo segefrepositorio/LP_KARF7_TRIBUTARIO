@@ -1,7 +1,7 @@
 // Utilitários de performance para otimização do site
 
 // Debounce para otimizar eventos de scroll e resize
-export const debounce = <T extends (...args: any[]) => any>(
+export const debounce = <T extends (...args: unknown[]) => unknown>(
   func: T,
   wait: number
 ): ((...args: Parameters<T>) => void) => {
@@ -13,7 +13,7 @@ export const debounce = <T extends (...args: any[]) => any>(
 };
 
 // Throttle para limitar execução de funções
-export const throttle = <T extends (...args: any[]) => any>(
+export const throttle = <T extends (...args: unknown[]) => unknown>(
   func: T,
   limit: number
 ): ((...args: Parameters<T>) => void) => {
@@ -100,7 +100,7 @@ export const isSlowConnection = (): boolean => {
     return false;
   }
   
-  const connection = (navigator as any).connection;
+  const connection = (navigator as Navigator & { connection?: { effectiveType: string } }).connection;
   return connection.effectiveType === 'slow-2g' || connection.effectiveType === '2g';
 };
 

@@ -42,45 +42,49 @@ const LawyerWebsite = () => {
   const isHeroVisible = useIntersectionObserver(heroSectionRef, { threshold: 0.1 });
 
   useEffect(() => {
-    // Só executar animações quando as bibliotecas estiverem carregadas
-    if (!isLoaded || !gsap || !ScrollReveal) return;
+    try {
+      // Só executar animações quando as bibliotecas estiverem carregadas
+      if (!isLoaded || !gsap || !ScrollReveal) return;
 
-    // Configuração inicial dos elementos para GSAP - OTIMIZADO PARA VELOCIDADE
-    if (heroTitleRef.current && heroSubtitleRef.current && heroButtonRef.current && isHeroVisible) {
-      // Configurar estado inicial dos elementos
-      gsap.set(heroTitleRef.current, { opacity: 0, y: isMobile ? 20 : 30 });
-      gsap.set(heroSubtitleRef.current, { opacity: 0, y: isMobile ? 15 : 20 });
-      gsap.set(heroButtonRef.current, { opacity: 0, scale: 0.9 });
-
-      // Timeline de animações GSAP - MAIS RÁPIDA E DIRETA
-      const tl = gsap.timeline();
+    // Configuração inicial dos elementos para GSAP - CORRIGIDA
+    if (heroTitleRef.current && heroSubtitleRef.current && heroButtonRef.current) {
       
-      // Animação do H1 - MAIS RÁPIDA
+      // Timeline de animações GSAP - MAIS RÁPIDA E DIRETA
+      const tl = gsap.timeline({ delay: 0.5 }); // Pequeno delay para garantir que a página carregou
+      
+      // Configurar estado inicial dos elementos
+      gsap.set([heroTitleRef.current, heroSubtitleRef.current, heroButtonRef.current], { 
+        opacity: 0, 
+        y: isMobile ? 20 : 30 
+      });
+      
+      // Animação do H1
       tl.to(heroTitleRef.current, {
         opacity: 1,
         y: 0,
-        duration: isMobile ? 0.4 : 0.6,
+        duration: isMobile ? 0.6 : 0.8,
         ease: "power2.out"
       })
-      // Animação do subtítulo - SIMULTÂNEA
+      // Animação do subtítulo
       .to(heroSubtitleRef.current, {
         opacity: 1,
         y: 0,
-        duration: isMobile ? 0.3 : 0.5,
+        duration: isMobile ? 0.5 : 0.7,
         ease: "power2.out"
-      }, "-=0.4") // Quase simultâneo
-      // Animação do botão - IMEDIATA
+      }, "-=0.4")
+      // Animação do botão
       .to(heroButtonRef.current, {
         opacity: 1,
+        y: 0,
         scale: 1,
-        duration: isMobile ? 0.3 : 0.4,
+        duration: isMobile ? 0.4 : 0.6,
         ease: "back.out(1.2)"
-      }, "-=0.3"); // Aparece rapidamente
+      }, "-=0.3");
     }
 
-    // Configuração do ScrollReveal - OTIMIZADA PARA PERFORMANCE
-    if (typeof ScrollReveal !== 'function') {
-      console.warn('ScrollReveal não está disponível como função');
+    // Configuração do ScrollReveal - CORRIGIDA
+    if (!ScrollReveal || typeof ScrollReveal !== 'function') {
+      console.warn('ScrollReveal não está disponível');
       return;
     }
     
@@ -91,8 +95,6 @@ const LawyerWebsite = () => {
       reset: false,
       easing: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)',
       viewFactor: isMobile ? 0.15 : 0.2,
-      // Garantir que use o scroll do window
-      container: window.document.documentElement,
       mobile: true,
       // Otimizações de performance
       beforeReveal: function (domEl) {
@@ -199,8 +201,15 @@ const LawyerWebsite = () => {
 
     // Cleanup
     return () => {
-      sr.destroy();
+      try {
+        sr.destroy();
+      } catch (error) {
+        console.warn('Erro ao destruir ScrollReveal:', error);
+      }
     };
+    } catch (error) {
+      console.warn('Erro nas animações:', error);
+    }
   }, [isLoaded, gsap, ScrollReveal, isMobile, isHeroVisible]);
 
   // Preload de recursos críticos
@@ -646,9 +655,9 @@ const LawyerWebsite = () => {
               Transformamos dados dispersos em informações estratégicas que geram decisões seguras e lucrativas.
             </h3>
             <a href="https://api.whatsapp.com/send?phone=5512991019885&text=Olá%20Dr.%20Carlos,%20vim%20pelo%20site%20e%20gostaria%20de%20um%20diagnóstico%20para%20a%20Reforma%20Tributária." target="_blank" rel="noopener noreferrer" className="w-full sm:w-auto inline-block">
-              <Button size="lg" className="btn w-full sm:w-auto text-xs sm:text-sm md:text-base lg:text-lg px-3 sm:px-4 md:px-6 py-3 sm:py-4 leading-tight">
+              <Button size="lg" className="btn w-full sm:w-auto text-xs sm:text-sm md:text-base lg:text-lg px-3 sm:px-4 md:px-6 py-3 sm:py-4 leading-tight whitespace-normal">
                 <FaWhatsapp className="h-4 w-4 sm:h-5 sm:w-5 mr-1 sm:mr-2 flex-shrink-0" />
-                <span className="break-words">Solicitar Diagnóstico para Reforma Tributária</span>
+                <span className="break-words text-center">Solicitar Diagnóstico para Reforma Tributária</span>
               </Button>
             </a>
           </div>
@@ -772,15 +781,12 @@ const LawyerWebsite = () => {
               </div>
               <div className="mt-4 sm:mt-6 lg:mt-8 flex flex-col sm:flex-row gap-3 sm:gap-4">
                 <a href="https://api.whatsapp.com/send?phone=5512991019885&text=Olá%20Dr.%20Carlos,%20vim%20pelo%20site%20e%20gostaria%20de%20um%20diagnóstico%20para%20a%20Reforma%20Tributária." target="_blank" rel="noopener noreferrer" className="w-full sm:w-auto">
-                  <Button size="lg" className="btn w-full sm:w-auto text-sm sm:text-base px-4 sm:px-6 py-3">
-                    <FaWhatsapp className="h-4 w-4 sm:h-5 sm:w-5 mr-2" />
-                    Preparação para Reforma
+                  <Button size="lg" className="btn w-full sm:w-auto text-sm sm:text-base px-4 sm:px-6 py-3 whitespace-normal">
+                    <FaWhatsapp className="h-4 w-4 sm:h-5 sm:w-5 mr-2 flex-shrink-0" />
+                    <span className="text-center">Preparação para Reforma</span>
                   </Button>
                 </a>
-                <Button size="lg" variant="outline" className="btn border-gray-300 text-gray-700 hover:bg-gray-100 hover:text-gray-900 w-full sm:w-auto text-sm sm:text-base px-4 sm:px-6 py-3">
-                  <Calculator className="h-4 w-4 sm:h-5 sm:w-5 mr-2" />
-                  Simulação de Impactos
-                </Button>
+
               </div>
             </div>
             <div className="about-image relative animate-scale-in order-1 lg:order-2">
@@ -813,17 +819,12 @@ const LawyerWebsite = () => {
             
             <div className="contact-form flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center mb-4 sm:mb-6 lg:mb-8">
               <a href="https://api.whatsapp.com/send?phone=5512991019885&text=Olá%20Dr.%20Carlos,%20vim%20pelo%20site%20e%20gostaria%20de%20um%20diagnóstico%20para%20a%20Reforma%20Tributária." target="_blank" rel="noopener noreferrer" className="w-full sm:w-auto">
-                <Button size="lg" className="btn w-full sm:w-auto text-sm sm:text-base lg:text-lg px-4 sm:px-6 py-3 sm:py-4 font-bold">
-                  <FaWhatsapp className="h-4 w-4 sm:h-5 sm:w-5 mr-2" />
-                  Agendar Diagnóstico Gratuito
+                <Button size="lg" className="btn w-full sm:w-auto text-sm sm:text-base lg:text-lg px-4 sm:px-6 py-3 sm:py-4 font-bold whitespace-normal">
+                  <FaWhatsapp className="h-4 w-4 sm:h-5 sm:w-5 mr-2 flex-shrink-0" />
+                  <span className="text-center">Agendar Diagnóstico Gratuito</span>
                 </Button>
               </a>
-              <a href="tel:+5512991019885" className="w-full sm:w-auto">
-                <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/20 w-full sm:w-auto text-sm sm:text-base px-4 sm:px-6 py-3 sm:py-4">
-                  <Phone className="h-4 w-4 sm:h-5 sm:w-5 mr-2" />
-                  Falar com Especialista
-                </Button>
-              </a>
+
             </div>
             
             {/* Garantia */}

@@ -3,8 +3,8 @@ import { useEffect, useState } from 'react';
 // Hook para carregamento tardio das bibliotecas de animação
 export const useLazyAnimations = () => {
   const [isLoaded, setIsLoaded] = useState(false);
-  const [gsap, setGsap] = useState<any>(null);
-  const [ScrollReveal, setScrollReveal] = useState<any>(null);
+  const [gsap, setGsap] = useState<typeof import('gsap').gsap | null>(null);
+  const [ScrollReveal, setScrollReveal] = useState<typeof import('scrollreveal').default | null>(null);
 
   useEffect(() => {
     // Carregar animações apenas quando necessário (após interação ou scroll)
@@ -22,6 +22,10 @@ export const useLazyAnimations = () => {
         setIsLoaded(true);
       } catch (error) {
         console.warn('Erro ao carregar bibliotecas de animação:', error);
+        // Garantir que o componente continue funcionando mesmo sem animações
+        setIsLoaded(false);
+        setGsap(null);
+        setScrollReveal(null);
       }
     };
 
