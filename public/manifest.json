@@ -1,0 +1,44 @@
+{
+  "name": "KARF7 - Especialistas em Reforma Tributária",
+  "short_name": "KARF7",
+  "description": "Diagnóstico completo e simulações precisas sob as novas regras tributárias. 20+ anos de experiência.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#1e293b",
+  "theme_color": "#1e293b",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "lang": "pt-BR",
+  "dir": "ltr",
+  "categories": ["business", "finance", "legal"],
+  "icons": [
+    {
+      "src": "/images/KARF7_LOGO.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/images/KARF7_LOGO.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Contato WhatsApp",
+      "short_name": "WhatsApp",
+      "description": "Entre em contato via WhatsApp",
+      "url": "https://api.whatsapp.com/send?phone=5512991019885&text=Olá%20Dr.%20Carlos,%20vim%20pelo%20site%20e%20preciso%20de%20advogado%20tributário.",
+      "icons": [
+        {
+          "src": "/images/KARF7_LOGO.png",
+          "sizes": "96x96"
+        }
+      ]
+    }
+  ],
+  "prefer_related_applications": false,
+  "edge_side_includes": true
+}

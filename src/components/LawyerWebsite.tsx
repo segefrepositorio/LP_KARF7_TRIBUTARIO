@@ -24,22 +24,32 @@ import {
   Zap
 } from "lucide-react";
 import { FaWhatsapp } from "react-icons/fa";
-import lawyerHero from "@/assets/lawyer-hero.jpg";
-import { useEffect, useRef } from "react";
-import { gsap } from "gsap";
-import ScrollReveal from "scrollreveal";
+import { useEffect, useRef, memo, lazy, Suspense } from "react";
+import { useLazyAnimations, useIsMobile, useIntersectionObserver } from "@/hooks/useLazyAnimations";
+import PerformanceOptimizer from './PerformanceOptimizer';
+
+// Componentes lazy removidos temporariamente - seções não existem
 
 const LawyerWebsite = () => {
   const heroTitleRef = useRef(null);
   const heroSubtitleRef = useRef(null);
   const heroButtonRef = useRef(null);
+  const heroSectionRef = useRef(null);
+  
+  // Hooks otimizados
+  const { isLoaded, gsap, ScrollReveal } = useLazyAnimations();
+  const isMobile = useIsMobile();
+  const isHeroVisible = useIntersectionObserver(heroSectionRef, { threshold: 0.1 });
 
   useEffect(() => {
+    // Só executar animações quando as bibliotecas estiverem carregadas
+    if (!isLoaded || !gsap || !ScrollReveal) return;
+
     // Configuração inicial dos elementos para GSAP - OTIMIZADO PARA VELOCIDADE
-    if (heroTitleRef.current && heroSubtitleRef.current && heroButtonRef.current) {
+    if (heroTitleRef.current && heroSubtitleRef.current && heroButtonRef.current && isHeroVisible) {
       // Configurar estado inicial dos elementos
-      gsap.set(heroTitleRef.current, { opacity: 0, y: 30 });
-      gsap.set(heroSubtitleRef.current, { opacity: 0, y: 20 });
+      gsap.set(heroTitleRef.current, { opacity: 0, y: isMobile ? 20 : 30 });
+      gsap.set(heroSubtitleRef.current, { opacity: 0, y: isMobile ? 15 : 20 });
       gsap.set(heroButtonRef.current, { opacity: 0, scale: 0.9 });
 
       // Timeline de animações GSAP - MAIS RÁPIDA E DIRETA
@@ -49,33 +59,38 @@ const LawyerWebsite = () => {
       tl.to(heroTitleRef.current, {
         opacity: 1,
         y: 0,
-        duration: 0.6,
+        duration: isMobile ? 0.4 : 0.6,
         ease: "power2.out"
       })
       // Animação do subtítulo - SIMULTÂNEA
       .to(heroSubtitleRef.current, {
         opacity: 1,
         y: 0,
-        duration: 0.5,
+        duration: isMobile ? 0.3 : 0.5,
         ease: "power2.out"
       }, "-=0.4") // Quase simultâneo
       // Animação do botão - IMEDIATA
       .to(heroButtonRef.current, {
         opacity: 1,
         scale: 1,
-        duration: 0.4,
+        duration: isMobile ? 0.3 : 0.4,
         ease: "back.out(1.2)"
       }, "-=0.3"); // Aparece rapidamente
     }
 
     // Configuração do ScrollReveal - OTIMIZADA PARA PERFORMANCE
+    if (typeof ScrollReveal !== 'function') {
+      console.warn('ScrollReveal não está disponível como função');
+      return;
+    }
+    
     const sr = ScrollReveal({
-      distance: '30px',
-      duration: 600,
+      distance: isMobile ? '20px' : '30px',
+      duration: isMobile ? 400 : 600,
       opacity: 0,
       reset: false,
       easing: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)',
-      viewFactor: 0.2,
+      viewFactor: isMobile ? 0.15 : 0.2,
       // Garantir que use o scroll do window
       container: window.document.documentElement,
       mobile: true,
@@ -89,15 +104,15 @@ const LawyerWebsite = () => {
     });
 
     // Hero Section - OTIMIZADO PARA VELOCIDADE
-    sr.reveal('.hero-title', { delay: 50, origin: 'bottom', duration: 600 });
-    sr.reveal('.hero-subtitle', { delay: 100, origin: 'bottom', duration: 500 });
-    sr.reveal('.hero-button', { delay: 150, origin: 'bottom', scale: 0.95, duration: 400 });
-    sr.reveal('.hero-cards', { delay: 200, interval: 100, origin: 'bottom', duration: 600 });
-    sr.reveal('.hero-reviews', { delay: 250, origin: 'bottom', duration: 500 });
+    sr.reveal('.hero-title', { delay: 50, origin: 'bottom', duration: isMobile ? 400 : 600 });
+    sr.reveal('.hero-subtitle', { delay: 100, origin: 'bottom', duration: isMobile ? 300 : 500 });
+    sr.reveal('.hero-button', { delay: 150, origin: 'bottom', scale: 0.95, duration: isMobile ? 300 : 400 });
+    sr.reveal('.hero-cards', { delay: 200, interval: isMobile ? 50 : 100, origin: 'bottom', duration: isMobile ? 400 : 600 });
+    sr.reveal('.hero-reviews', { delay: 250, origin: 'bottom', duration: isMobile ? 300 : 500 });
 
-    // Services Section
+    // Services Section - Carregamento tardio
     sr.reveal('.services-header', { delay: 100, origin: 'top' });
-    sr.reveal('.service-card', { delay: 200, interval: 200, origin: 'bottom', scale: 0.95 });
+    sr.reveal('.service-card', { delay: 200, interval: isMobile ? 100 : 200, origin: 'bottom', scale: 0.95 });
 
     // Pain Points Section
     sr.reveal('.pain-header', { delay: 100, origin: 'top' });
@@ -186,6 +201,30 @@ const LawyerWebsite = () => {
     return () => {
       sr.destroy();
     };
+  }, [isLoaded, gsap, ScrollReveal, isMobile, isHeroVisible]);
+
+  // Preload de recursos críticos
+  useEffect(() => {
+    // Preload da imagem hero
+    const heroImg = new Image();
+    heroImg.src = 'https://images.pexels.com/photos/4342494/pexels-photo-4342494.jpeg?auto=compress&cs=tinysrgb&w=1920&h=1080&dpr=1';
+    
+    // Preload do logo
+    const logoImg = new Image();
+    logoImg.src = '/images/KARF7_LOGO.png';
+    
+    // Preconnect para recursos externos
+    const preconnectLinks = [
+      'https://images.pexels.com',
+      'https://api.whatsapp.com'
+    ];
+    
+    preconnectLinks.forEach(href => {
+      const link = document.createElement('link');
+      link.rel = 'preconnect';
+      link.href = href;
+      document.head.appendChild(link);
+    });
   }, []);
   const services = [
     {
@@ -321,6 +360,9 @@ const LawyerWebsite = () => {
 
   return (
     <div className="bg-background">
+      {/* Performance Optimizer */}
+      <PerformanceOptimizer />
+      
       {/* Header */}
       <header className="bg-white/95 backdrop-blur-sm sticky top-0 z-50 border-b">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -344,13 +386,14 @@ const LawyerWebsite = () => {
 
       {/* Hero Section - Estrutura Aprimorada */}
       <section 
+        ref={heroSectionRef}
         className="relative min-h-screen flex items-center justify-center"
         style={{
-          background: `linear-gradient(135deg, rgba(15, 23, 42, 0.4) 0%, rgba(30, 41, 59, 0.3) 50%, rgba(51, 65, 85, 0.2) 100%), url('https://images.pexels.com/photos/4342494/pexels-photo-4342494.jpeg')`,
+          background: `linear-gradient(135deg, rgba(15, 23, 42, 0.4) 0%, rgba(30, 41, 59, 0.3) 50%, rgba(51, 65, 85, 0.2) 100%), url('https://images.pexels.com/photos/4342494/pexels-photo-4342494.jpeg?auto=compress&cs=tinysrgb&w=${isMobile ? '768' : '1920'}&h=${isMobile ? '1024' : '1080'}&dpr=1')`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
-          backgroundAttachment: 'fixed'
+          backgroundAttachment: isMobile ? 'scroll' : 'fixed'
         }}
       >
         {/* Overlay com gradiente sofisticado */}
@@ -742,7 +785,7 @@ const LawyerWebsite = () => {
             </div>
             <div className="about-image relative animate-scale-in order-1 lg:order-2">
               <img 
-                src={lawyerHero} 
+                src="https://images.pexels.com/photos/4342494/pexels-photo-4342494.jpeg?auto=compress&cs=tinysrgb&w=1920&h=1080&dpr=1" 
                 alt="Especialistas em Reforma Tributária"
                 className="rounded-xl sm:rounded-2xl shadow-elevated w-full object-cover h-[250px] sm:h-[300px] md:h-[400px] lg:h-[500px]"
               />
