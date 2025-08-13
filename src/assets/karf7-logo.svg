@@ -1,5 +1,7 @@
-<svg width="200" height="60" viewBox="0 0 200 60" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <text x="0" y="45" font-family="Arial, sans-serif" font-size="48" font-weight="bold" fill="#475569">
-    KARF7
-  </text>
+<svg width="361" height="124" viewBox="0 0 361 124" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M76.9 30.7H95.3V93.3H76.9V67.9L60.5 93.3H38.5L58.1 64.7L39.7 30.7H61.7L76.9 61.1V30.7Z" fill="#2C3542"/>
+  <path d="M106.6 30.7H125V93.3H106.6V30.7Z" fill="#2C3542"/>
+  <path d="M138.2 30.7H156.6V76.3H187.8V93.3H138.2V30.7Z" fill="#2C3542"/>
+  <path d="M198.6 30.7H217V76.3H248.2V93.3H198.6V30.7Z" fill="#2C3542"/>
+  <path d="M258.9 30.7H322.5V47.7H296.1V54.9H318.1V71.9H296.1V76.3H322.5V93.3H258.9V30.7Z" fill="#2C3542"/>
 </svg>

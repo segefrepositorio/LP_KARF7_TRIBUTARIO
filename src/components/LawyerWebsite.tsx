@@ -25,7 +25,6 @@ import {
 } from "lucide-react";
 import { FaWhatsapp } from "react-icons/fa";
 import lawyerHero from "@/assets/lawyer-hero.jpg";
-import karf7Logo from "@/assets/karf7-logo.svg";
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import ScrollReveal from "scrollreveal";
@@ -69,14 +68,24 @@ const LawyerWebsite = () => {
       }, "-=0.3"); // Aparece rapidamente
     }
 
-    // Configuração do ScrollReveal - OTIMIZADA
+    // Configuração do ScrollReveal - OTIMIZADA PARA PERFORMANCE
     const sr = ScrollReveal({
-      distance: '40px',
-      duration: 800,
+      distance: '30px',
+      duration: 600,
       opacity: 0,
       reset: false,
       easing: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)',
-      viewFactor: 0.15
+      viewFactor: 0.2,
+      // Garantir que use o scroll do window
+      container: window.document.documentElement,
+      mobile: true,
+      // Otimizações de performance
+      beforeReveal: function (domEl) {
+        domEl.style.willChange = 'transform, opacity';
+      },
+      afterReveal: function (domEl) {
+        domEl.style.willChange = 'auto';
+      }
     });
 
     // Hero Section - OTIMIZADO PARA VELOCIDADE
@@ -119,45 +128,55 @@ const LawyerWebsite = () => {
     // Footer
     sr.reveal('.footer-content', { delay: 100, origin: 'bottom', distance: '30px' });
 
-    // Animações GSAP para hover effects - SEM OVERFLOW
+    // Animações GSAP para hover effects - OTIMIZADO PARA PERFORMANCE
     const cards = document.querySelectorAll('.hover-lift');
     cards.forEach(card => {
+      // Configurar will-change para performance
+      card.style.willChange = 'transform';
+      
       card.addEventListener('mouseenter', () => {
         gsap.to(card, {
-          y: -8,
-          duration: 0.3,
+          y: -6,
+          duration: 0.25,
           ease: "power2.out",
-          boxShadow: "0 20px 40px rgba(0,0,0,0.1)"
+          force3D: true, // Forçar aceleração de hardware
+          boxShadow: "0 15px 30px rgba(0,0,0,0.1)"
         });
       });
       
       card.addEventListener('mouseleave', () => {
         gsap.to(card, {
           y: 0,
-          duration: 0.3,
+          duration: 0.25,
           ease: "power2.out",
+          force3D: true,
           boxShadow: "0 4px 6px rgba(0,0,0,0.1)"
         });
       });
     });
 
-    // Animação de botões - SEM SCALE
+    // Animação de botões - OTIMIZADO PARA PERFORMANCE
     const buttons = document.querySelectorAll('button, .btn');
     buttons.forEach(button => {
+      // Configurar will-change para performance
+      button.style.willChange = 'transform';
+      
       button.addEventListener('mouseenter', () => {
         gsap.to(button, {
           y: -2,
-          duration: 0.2,
+          duration: 0.15,
           ease: "power2.out",
-          boxShadow: "0 8px 20px rgba(0,0,0,0.15)"
+          force3D: true,
+          boxShadow: "0 6px 16px rgba(0,0,0,0.12)"
         });
       });
       
       button.addEventListener('mouseleave', () => {
         gsap.to(button, {
           y: 0,
-          duration: 0.2,
+          duration: 0.15,
           ease: "power2.out",
+          force3D: true,
           boxShadow: "0 2px 8px rgba(0,0,0,0.1)"
         });
       });
@@ -172,44 +191,44 @@ const LawyerWebsite = () => {
     {
       icon: Shield,
       title: "Compliance Tributário",
-      headline: "Pare de Viver com Medo da Receita Federal Bater na Sua Porta",
-      description: "Garantia blindada de conformidade - durma tranquilo sabendo que está 100% protegido",
-      benefits: "Evita autuações milionárias e multas desnecessárias"
+      headline: "Prepare-se para a Reforma Tributária com Conformidade Total",
+      description: "Diagnóstico completo de adequação às novas regras tributárias com proteção jurídica garantida",
+      benefits: "Evita autuações e multas sob o novo regime tributário"
     },
     {
       icon: TrendingUp,
       title: "Planejamento Tributário",
-      headline: "Seus Concorrentes Pagam 30% Menos Impostos que Você. Quer Saber Como?",
-      description: "Estrutura fiscal inteligente que transforma obrigação em vantagem competitiva",
-      benefits: "Redução legal de 20-40% na carga tributária"
+      headline: "Simule Cenários da Reforma e Economize até 30% em Impostos",
+      description: "Cálculos precisos e estratégia fiscal inteligente para o novo cenário tributário brasileiro",
+      benefits: "Redução legal de carga tributária com segurança jurídica"
     },
     {
       icon: Calculator,
-      title: "Recuperação de Créditos",
-      headline: "Sua Empresa Tem Milhões 'Esquecidos' nos Cofres da Receita",
-      description: "Identificação e monetização de créditos que você nem sabia que tinha direito",
-      benefits: "Injeção imediata de caixa sem empréstimos"
+      title: "Simulação de Impactos",
+      headline: "Calcule Exatamente Quanto Sua Empresa Pagará com a Reforma",
+      description: "Análise detalhada do impacto das novas regras em cada operação do seu negócio",
+      benefits: "Decisões imediatas baseadas em dados precisos"
     },
     {
       icon: FileText,
-      title: "Reforma Tributária",
-      headline: "A Reforma Vem Aí. Quem Não Se Preparar Vai Pagar 3x Mais",
-      description: "Preparação estratégica para o novo cenário - saia na frente da concorrência",
-      benefits: "Modernização que vira vantagem competitiva"
+      title: "Preparação para Reforma",
+      headline: "Antecipe-se às Mudanças e Transforme-as em Vantagem Competitiva",
+      description: "Estratégia completa de adaptação às novas regras com processos redondos e cálculos exatos",
+      benefits: "Segurança operacional durante a transição tributária"
     },
     {
       icon: Scale,
-      title: "Defesa Administrativa",
-      headline: "Receita Federal Quer R$ 5 Milhões da Sua Empresa? Vamos Contestar",
-      description: "Defesa técnica impecável que protege seu caixa de autuações abusivas",
-      benefits: "Proteção do patrimônio empresarial"
+      title: "Diagnóstico Tributário",
+      headline: "Radiografia Completa da Sua Empresa Sob as Novas Regras",
+      description: "Mapeamento preciso de riscos e oportunidades no cenário da Reforma Tributária",
+      benefits: "Proteção preventiva contra contingências fiscais"
     },
     {
       icon: Building,
-      title: "Contencioso Judicial",
-      headline: "Quando a Receita Insiste no Erro, Nós Insistimos na Justiça",
-      description: "Ações judiciais estratégicas para garantir seus direitos como contribuinte",
-      benefits: "Segurança jurídica definitiva"
+      title: "Reestruturação Empresarial",
+      headline: "Reorganize Sua Operação para o Novo Sistema Tributário",
+      description: "Redesenho de processos e estruturas para máxima eficiência sob as novas regras",
+      benefits: "Otimização operacional alinhada à nova tributação"
     }
   ];
 
@@ -217,26 +236,26 @@ const LawyerWebsite = () => {
     {
       number: "01",
       title: "Diagnóstico Gratuito",
-      subtitle: "Raio-X Completo da Sua Situação Tributária",
-      description: "Analisamos sua empresa sem compromisso e identificamos exatamente onde está perdendo dinheiro"
+      subtitle: "Simulação Completa sob as Novas Regras Tributárias",
+      description: "Analisamos sua operação e calculamos precisamente o impacto da Reforma Tributária no seu negócio"
     },
     {
       number: "02", 
       title: "Análise Especializada",
-      subtitle: "Profissionais Seniores Avaliam Cada Oportunidade",
-      description: "Zero juniores. Apenas especialistas com 10+ anos de Big Four mapeiam riscos e oportunidades"
+      subtitle: "Cálculos Precisos por Especialistas em Alta Complexidade",
+      description: "Profissionais com 20+ anos de experiência avaliam cada detalhe da sua operação sob o novo regime"
     },
     {
       number: "03",
       title: "Estratégia Personalizada",
-      subtitle: "Solução Sob Medida Para Sua Realidade", 
-      description: "Desenvolvemos um plano específico que funciona para seu setor, porte e complexidade"
+      subtitle: "Plano de Adaptação com Processos Redondos", 
+      description: "Desenvolvemos estratégia tributária correta específica para seu setor e complexidade operacional"
     },
     {
       number: "04",
-      title: "Resultados Concretos",
-      subtitle: "Implementação e Acompanhamento Até o Último Real",
-      description: "Não paramos até você ver o dinheiro entrando no caixa e os riscos eliminados"
+      title: "Decisão Imediata",
+      subtitle: "Implementação Segura com Acompanhamento Contínuo",
+      description: "Suporte completo na transição para o novo sistema tributário com ajustes precisos e monitoramento"
     }
   ];
 
@@ -244,19 +263,19 @@ const LawyerWebsite = () => {
     {
       name: "João Silva, CEO",
       location: "Empresa de Tecnologia - Faturamento R$ 120MM",
-      text: "Estava perdendo o sono com uma possível autuação de R$ 8 milhões. A KARF7 não só identificou R$ 2,3 milhões em créditos que nem sabíamos que existiam, como blindou nossa operação. Hoje durmo tranquilo e meu CFO sorri quando fala de tributos.",
+      text: "A simulação da KARF7 sobre o impacto da Reforma Tributária nos permitiu tomar decisões estratégicas com 6 meses de antecedência. Os cálculos precisos e a estratégia tributária correta nos deram vantagem competitiva enquanto concorrentes ainda tentam entender as mudanças.",
       rating: 5
     },
     {
       name: "Maria Santos, Diretora Financeira",
       location: "Indústria Farmacêutica - Faturamento R$ 300MM", 
-      text: "Evitaram uma autuação de R$ 5 milhões com uma defesa que nem nosso jurídico interno acreditava ser possível. O nível técnico é incomparável - são os mesmos profissionais que estruturavam operações bilionárias nas Big Four.",
+      text: "O diagnóstico tributário da KARF7 revelou oportunidades que não enxergávamos com as novas regras. A expertise em alta complexidade tributária fez toda diferença - são profissionais que realmente entendem as nuances da Reforma e seus impactos em operações complexas.",
       rating: 5
     },
     {
       name: "Carlos Mendoza, CFO",
       location: "Varejo Nacional - Faturamento R$ 200MM",
-      text: "Em 8 meses, reduziram nossa carga tributária em 25% e ainda recuperaram R$ 1,2 milhão em créditos. O ROI foi de 800% no primeiro ano. Agora nossos concorrentes perguntam como conseguimos preços tão competitivos.",
+      text: "Graças à preparação antecipada com a KARF7, redesenhamos nossos processos para o novo cenário tributário e estimamos economia de 22% em impostos. A decisão imediata baseada em dados precisos nos permitiu ajustar a operação com segurança e previsibilidade.",
       rating: 5
     }
   ];
@@ -264,39 +283,39 @@ const LawyerWebsite = () => {
   const benefits = [
     {
       icon: Award,
-      title: "Expertise Big Four",
-      subtitle: "Não São Consultores Comuns - São os Mesmos que Estruturaram Bilhões",
-      description: "Time com passagem sólida por Big Four em operações de alta complexidade. Quem salvou gigantes corporativas, pode salvar sua empresa."
+      title: "Expertise em Alta Complexidade",
+      subtitle: "20+ Anos de Experiência em Cenários Tributários Complexos",
+      description: "Profissionais que estruturaram operações bilionárias nas maiores empresas do país, com profundo conhecimento das nuances da Reforma Tributária."
     },
     {
       icon: Heart,
-      title: "Personalização Total",
-      subtitle: "Chega de Soluções 'Tamanho Único' que Não Funcionam", 
-      description: "Profissionais seniores dedicados exclusivamente ao seu projeto. Sua empresa merece atenção VIP, não atendimento de call center."
+      title: "Diagnóstico Completo",
+      subtitle: "Simulações Precisas sob as Novas Regras Tributárias", 
+      description: "Mapeamento detalhado do impacto da Reforma em cada aspecto do seu negócio, com cálculos exatos para tomada de decisão segura."
     },
     {
       icon: TrendingUp,
-      title: "Resultados Concretos",
-      subtitle: "Foco Obsessivo em Colocar Dinheiro no Seu Bolso",
-      description: "Monetização real e geração de caixa sem aventuras tributárias. Se não gerar resultado, você não paga."
+      title: "Cálculos Precisos",
+      subtitle: "Números Exatos para Decisões Estratégicas Imediatas",
+      description: "Análises quantitativas rigorosas que revelam exatamente como cada operação será afetada pelas novas regras tributárias."
     },
     {
       icon: Eye,
-      title: "Segurança Jurídica",
-      subtitle: "Embasamento Técnico que Resiste a Qualquer Fiscalização",
-      description: "Jurisprudência atualizada do CARF, STF e STJ. Estratégias blindadas que passam em qualquer auditoria."
+      title: "Estratégia Tributária Correta",
+      subtitle: "Planejamento Técnico Alinhado às Novas Regras",
+      description: "Abordagem estratégica que transforma a complexidade da Reforma em vantagem competitiva com total segurança jurídica."
     },
     {
       icon: Globe,
-      title: "Visão Estratégica",
-      subtitle: "Tributário Alinhado ao Negócio, Não Contra Ele",
-      description: "Estratégia fiscal que potencializa operações, não as complica. Crescimento sem medo de complicações."
+      title: "Processos Redondos",
+      subtitle: "Redesenho Operacional para o Novo Cenário Fiscal",
+      description: "Adaptação completa de processos e sistemas para conformidade perfeita com o novo regime tributário, sem surpresas."
     },
     {
       icon: Zap,
-      title: "Inovação Tributária",
-      subtitle: "Preparação Para o Futuro, Não Só Para o Presente",
-      description: "Antecipação da Reforma Tributária com modelagem de impactos. Saia na frente enquanto concorrentes se adaptam."
+      title: "Decisão Imediata",
+      subtitle: "Implementação Rápida com Acompanhamento Contínuo",
+      description: "Suporte completo na transição para o novo sistema tributário, permitindo decisões ágeis com base em informações confiáveis."
     }
   ];
 
@@ -307,7 +326,7 @@ const LawyerWebsite = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center">
-              <img src={karf7Logo} alt="KARF7" className="h-8 w-auto" />
+              <img src="/images/KARF7_LOGO.png" alt="KARF7" className="h-8 w-auto" />
             </div>
             {/* Navegação removida - apenas logo e WhatsApp */}
             <div className="flex items-center space-x-2 sm:space-x-4">
@@ -325,7 +344,7 @@ const LawyerWebsite = () => {
 
       {/* Hero Section - Estrutura Aprimorada */}
       <section 
-        className="relative min-h-screen flex items-center justify-center overflow-hidden"
+        className="relative min-h-screen flex items-center justify-center"
         style={{
           background: `linear-gradient(135deg, rgba(15, 23, 42, 0.4) 0%, rgba(30, 41, 59, 0.3) 50%, rgba(51, 65, 85, 0.2) 100%), url('https://images.pexels.com/photos/4342494/pexels-photo-4342494.jpeg')`,
           backgroundSize: 'cover',
@@ -347,57 +366,57 @@ const LawyerWebsite = () => {
             {/* Badge de credibilidade */}
             <div className="inline-flex items-center px-3 py-2 bg-white/10 backdrop-blur-md border border-white/20 rounded-full text-xs sm:text-sm text-white/90 mb-4 sm:mb-6">
               <Shield className="w-3 h-3 sm:w-4 sm:h-4 mr-2 text-secondary" />
-              <span className="text-center">Especialistas Big Four • 5+ anos • Zero autuações</span>
+              <span className="text-center">Especialistas em Reforma Tributária • 20+ anos • Alta Complexidade</span>
             </div>
 
             {/* Título principal aprimorado */}
             <div className="space-y-4 sm:space-y-6">
               <h1 ref={heroTitleRef} className="hero-title text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black leading-tight text-white px-1 sm:px-2">
-                Transforme Impostos em
+                Prepare-se para a
                 <span className="block bg-gradient-to-r from-secondary via-yellow-400 to-secondary bg-clip-text text-transparent animate-pulse py-1 sm:py-2 leading-relaxed">
-                  Vantagem Competitiva
+                  Reforma Tributária
                 </span>
               </h1>
               
               <p ref={heroSubtitleRef} className="hero-subtitle text-lg sm:text-xl lg:text-2xl xl:text-3xl text-slate-200 leading-relaxed max-w-5xl mx-auto font-light px-2">
-                Pare de <span className="text-red-400 font-semibold">perder dinheiro</span> com estratégias amadoras.
+                Diagnóstico completo e <span className="text-secondary font-semibold">simulações precisas</span> sob as novas regras.
                 <br className="hidden sm:block" />
-                Estruture operações de <span className="text-secondary font-bold">milhões</span> com quem fez isso nas Big Four.
+                Decisões imediatas com <span className="text-secondary font-bold">estratégia tributária correta</span> e processos redondos.
               </p>
             </div>
 
             {/* Cards de credenciais redesenhados */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 lg:gap-6 max-w-6xl mx-auto my-8 sm:my-12 lg:my-16 px-2">
               <div className="group bg-gradient-to-br from-white/15 to-white/5 backdrop-blur-xl border border-white/20 rounded-xl sm:rounded-2xl p-3 sm:p-4 lg:p-6 hover:from-white/20 hover:to-white/10 transition-all duration-500 hover:shadow-2xl">
-                <div className="text-xl sm:text-2xl lg:text-3xl font-black text-secondary mb-1 sm:mb-2">Big 4</div>
-                <div className="text-xs sm:text-sm text-slate-300 leading-tight">Experiência em multinacionais</div>
-              </div>
-              
-              <div className="group bg-gradient-to-br from-white/15 to-white/5 backdrop-blur-xl border border-white/20 rounded-xl sm:rounded-2xl p-3 sm:p-4 lg:p-6 hover:from-white/20 hover:to-white/10 transition-all duration-500 hover:shadow-2xl">
-                <div className="text-xl sm:text-2xl lg:text-3xl font-black text-secondary mb-1 sm:mb-2">R$ 2B+</div>
-                <div className="text-xs sm:text-sm text-slate-300 leading-tight">Em economia tributária</div>
+                <div className="text-xl sm:text-2xl lg:text-3xl font-black text-secondary mb-1 sm:mb-2">20+</div>
+                <div className="text-xs sm:text-sm text-slate-300 leading-tight">Anos de experiência tributária</div>
               </div>
               
               <div className="group bg-gradient-to-br from-white/15 to-white/5 backdrop-blur-xl border border-white/20 rounded-xl sm:rounded-2xl p-3 sm:p-4 lg:p-6 hover:from-white/20 hover:to-white/10 transition-all duration-500 hover:shadow-2xl">
                 <div className="text-xl sm:text-2xl lg:text-3xl font-black text-secondary mb-1 sm:mb-2">100%</div>
-                <div className="text-xs sm:text-sm text-slate-300 leading-tight">Taxa de aprovação</div>
+                <div className="text-xs sm:text-sm text-slate-300 leading-tight">Simulações precisas</div>
               </div>
               
               <div className="group bg-gradient-to-br from-white/15 to-white/5 backdrop-blur-xl border border-white/20 rounded-xl sm:rounded-2xl p-3 sm:p-4 lg:p-6 hover:from-white/20 hover:to-white/10 transition-all duration-500 hover:shadow-2xl">
                 <div className="text-xl sm:text-2xl lg:text-3xl font-black text-secondary mb-1 sm:mb-2">24h</div>
-                <div className="text-xs sm:text-sm text-slate-300 leading-tight">Diagnóstico completo</div>
+                <div className="text-xs sm:text-sm text-slate-300 leading-tight">Diagnóstico tributário</div>
+              </div>
+              
+              <div className="group bg-gradient-to-br from-white/15 to-white/5 backdrop-blur-xl border border-white/20 rounded-xl sm:rounded-2xl p-3 sm:p-4 lg:p-6 hover:from-white/20 hover:to-white/10 transition-all duration-500 hover:shadow-2xl">
+                <div className="text-xl sm:text-2xl lg:text-3xl font-black text-secondary mb-1 sm:mb-2">Alta</div>
+                <div className="text-xs sm:text-sm text-slate-300 leading-tight">Complexidade operacional</div>
               </div>
             </div>
 
             {/* CTA aprimorado */}
             <div ref={heroButtonRef} className="space-y-4 sm:space-y-6 lg:space-y-8 px-2">
               <div className="flex flex-col sm:flex-row gap-4 justify-center items-center max-w-2xl mx-auto">
-                <a href="https://api.whatsapp.com/send?phone=5512991019885&text=Olá%20Dr.%20Carlos,%20vim%20pelo%20site%20e%20preciso%20de%20advogado%20tributário." target="_blank" rel="noopener noreferrer" className="w-full sm:w-auto">
+                <a href="https://api.whatsapp.com/send?phone=5512991019885&text=Olá%20Dr.%20Carlos,%20vim%20pelo%20site%20e%20gostaria%20de%20um%20diagnóstico%20para%20a%20Reforma%20Tributária." target="_blank" rel="noopener noreferrer" className="w-full sm:w-auto">
                   <Button size="lg" className="group relative w-full sm:w-auto bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-bold text-lg sm:text-xl px-8 sm:px-12 py-4 sm:py-6 rounded-xl sm:rounded-2xl shadow-2xl hover:shadow-green-500/25 transition-all duration-300 border-2 border-green-400/30">
                     <div className="absolute inset-0 bg-gradient-to-r from-green-400/20 to-green-600/20 rounded-xl sm:rounded-2xl blur-xl group-hover:blur-2xl transition-all duration-300"></div>
                     <div className="relative flex items-center justify-center">
                       <FaWhatsapp className="h-6 w-6 sm:h-7 sm:w-7 mr-2 sm:mr-3" />
-                      <span className="text-center">Falar com Dr. Carlos Agora</span>
+                      <span className="text-center">Agendar Diagnóstico Gratuito</span>
                     </div>
                   </Button>
                 </a>
@@ -494,10 +513,10 @@ const LawyerWebsite = () => {
         <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-6">
           <div className="services-header text-center mb-8 sm:mb-12 lg:mb-16 animate-slide-up">
             <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-primary mb-3 sm:mb-4 px-2">
-              Nossos Serviços
+              Preparação para a Reforma Tributária
             </h2>
             <p className="text-base sm:text-lg lg:text-xl text-muted-foreground max-w-3xl mx-auto px-4">
-              Soluções que resolvem seus maiores problemas tributários
+              Soluções Estratégicas para Adaptação às Novas Regras Tributárias
             </p>
           </div>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 lg:gap-8">
@@ -536,44 +555,44 @@ const LawyerWebsite = () => {
         <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-6">
           <div className="pain-header text-center mb-8 sm:mb-12 lg:mb-16 animate-slide-up">
             <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-primary mb-3 sm:mb-4 lg:mb-6 px-2 leading-tight">
-              Você Reconhece Alguma Dessas Situações?
+              Desafios da Reforma Tributária
             </h2>
             <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-muted-foreground max-w-4xl mx-auto px-4 leading-relaxed italic mb-6 sm:mb-8">
-              "Você tenta entender os tributos, mas sempre parece faltar alguma peça?"
+              "Transformamos Complexidades do Novo Sistema em Vantagens Estratégicas"
             </p>
           </div>
           
           {/* Grid de Dores */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 lg:gap-8 mb-8 sm:mb-10 lg:mb-12">
             <div className="pain-card bg-white/80 backdrop-blur-sm rounded-xl p-4 sm:p-6 lg:p-8 hover-lift border-l-4 border-red-500">
-              <div className="text-2xl sm:text-3xl mb-3 sm:mb-4">😰</div>
-              <h3 className="text-lg sm:text-xl lg:text-2xl font-bold text-foreground mb-2 sm:mb-3">A Reunião do Pesadelo</h3>
+              <div className="text-2xl sm:text-3xl mb-3 sm:mb-4">🧮</div>
+              <h3 className="text-lg sm:text-xl lg:text-2xl font-bold text-foreground mb-2 sm:mb-3">Simulações Imprecisas</h3>
               <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
-                Os números existem, mas não se conectam. As planilhas não refletem a realidade. E você precisa explicar para o conselho por que a empresa pode enfrentar uma autuação milionária.
+                Sua empresa tenta calcular o impacto da Reforma Tributária, mas os números não fecham. As planilhas não refletem a realidade e você não consegue tomar decisões confiáveis.
               </p>
             </div>
             
             <div className="pain-card bg-white/80 backdrop-blur-sm rounded-xl p-4 sm:p-6 lg:p-8 hover-lift border-l-4 border-orange-500">
               <div className="text-2xl sm:text-3xl mb-3 sm:mb-4">💸</div>
-              <h3 className="text-lg sm:text-xl lg:text-2xl font-bold text-foreground mb-2 sm:mb-3">O Dinheiro que Sumiu</h3>
+              <h3 className="text-lg sm:text-xl lg:text-2xl font-bold text-foreground mb-2 sm:mb-3">Processos Inadequados</h3>
               <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
-                Você descobriu que pagou R$ 800 mil em impostos desnecessários. Pior: só soube disso quando um concorrente comentou sobre uma decisão favorável que vocês perderam.
+                Seus processos atuais não estão preparados para o novo sistema tributário. A adaptação parece complexa e você teme perder competitividade durante a transição.
               </p>
             </div>
             
             <div className="pain-card bg-white/80 backdrop-blur-sm rounded-xl p-4 sm:p-6 lg:p-8 hover-lift border-l-4 border-yellow-500">
               <div className="text-2xl sm:text-3xl mb-3 sm:mb-4">📊</div>
-              <h3 className="text-lg sm:text-xl lg:text-2xl font-bold text-foreground mb-2 sm:mb-3">A Decisão no Escuro</h3>
+              <h3 className="text-lg sm:text-xl lg:text-2xl font-bold text-foreground mb-2 sm:mb-3">Decisões Estratégicas</h3>
               <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
-                Toda estratégia de crescimento vira um "achômetro" porque ninguém sabe ao certo qual será o impacto tributário real. Crescer virou sinônimo de risco.
+                Precisa tomar decisões imediatas sobre investimentos e precificação considerando a Reforma Tributária, mas não tem dados confiáveis para embasar suas escolhas.
               </p>
             </div>
             
             <div className="pain-card bg-white/80 backdrop-blur-sm rounded-xl p-4 sm:p-6 lg:p-8 hover-lift border-l-4 border-red-600">
               <div className="text-2xl sm:text-3xl mb-3 sm:mb-4">⏰</div>
-              <h3 className="text-lg sm:text-xl lg:text-2xl font-bold text-foreground mb-2 sm:mb-3">A Bomba-Relógio</h3>
+              <h3 className="text-lg sm:text-xl lg:text-2xl font-bold text-foreground mb-2 sm:mb-3">Prazo se Esgotando</h3>
               <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
-                Você sabe que algo está errado na estrutura fiscal, mas não sabe o quê. E cada dia que passa, o problema só cresce.
+                A implementação da Reforma Tributária está chegando e sua empresa ainda não tem uma estratégia clara. Cada dia de atraso pode significar perdas significativas.
               </p>
             </div>
           </div>
@@ -583,10 +602,10 @@ const LawyerWebsite = () => {
             <h3 className="text-lg sm:text-xl lg:text-2xl font-bold text-primary mb-3 sm:mb-4 px-2">
               Transformamos dados dispersos em informações estratégicas que geram decisões seguras e lucrativas.
             </h3>
-            <a href="https://api.whatsapp.com/send?phone=5512991019885&text=Olá%20Dr.%20Carlos,%20vim%20pelo%20site%20e%20preciso%20de%20advogado%20tributário." target="_blank" rel="noopener noreferrer" className="w-full sm:w-auto inline-block">
+            <a href="https://api.whatsapp.com/send?phone=5512991019885&text=Olá%20Dr.%20Carlos,%20vim%20pelo%20site%20e%20gostaria%20de%20um%20diagnóstico%20para%20a%20Reforma%20Tributária." target="_blank" rel="noopener noreferrer" className="w-full sm:w-auto inline-block">
               <Button size="lg" className="btn w-full sm:w-auto text-sm sm:text-base lg:text-lg px-4 sm:px-6 py-3 sm:py-4">
                 <FaWhatsapp className="h-4 w-4 sm:h-5 sm:w-5 mr-2" />
-                Quero Resolver Essas Dores Agora
+                Solicitar Diagnóstico para Reforma Tributária
               </Button>
             </a>
           </div>
@@ -633,10 +652,10 @@ const LawyerWebsite = () => {
         <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-6">
           <div className="process-header text-center mb-8 sm:mb-12 lg:mb-16 animate-slide-up">
             <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-primary mb-3 sm:mb-4 px-2">
-              Como Podemos Te Ajudar
+              Como Preparamos Sua Empresa
             </h2>
             <p className="text-base sm:text-lg lg:text-xl text-muted-foreground max-w-3xl mx-auto px-4">
-              Nosso Processo Anti-Surpresas: Técnico, Personalizado e Focado em Resultados
+              Nossa metodologia exclusiva transforma a complexidade da Reforma Tributária em vantagem competitiva para seu negócio
             </p>
           </div>
           <div className="relative grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
@@ -665,7 +684,7 @@ const LawyerWebsite = () => {
               Por que escolher a KARF7?
             </h2>
             <p className="text-base sm:text-lg lg:text-xl text-muted-foreground max-w-3xl mx-auto px-4">
-              Expertise em Alta Complexidade Corporativa com Resultados Comprovados
+              20+ anos de experiência em alta complexidade tributária, diagnósticos precisos e estratégias personalizadas
             </p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
@@ -693,44 +712,44 @@ const LawyerWebsite = () => {
               </h2>
               <div className="space-y-3 sm:space-y-4 lg:space-y-6 text-sm sm:text-base text-muted-foreground leading-relaxed">
                 <p className="text-lg sm:text-xl lg:text-2xl font-bold text-primary mb-4 sm:mb-6">
-                  "Soluções Técnicas. Resultados Concretos. Sono Tranquilo."
+                  "Especialistas em Reforma Tributária. Resultados Concretos. Sono Tranquilo."
                 </p>
                 <p className="text-base sm:text-lg">
-                  Nosso propósito é simples: Transformar a área tributária da sua empresa de <strong className="text-red-600">"centro de custo e dor de cabeça"</strong> em <strong className="text-green-600">"centro de lucro e vantagem competitiva"</strong>.
+                  Nosso propósito é simples: Transformar a complexidade da Reforma Tributária de <strong className="text-red-600">"ameaça ao seu negócio"</strong> em <strong className="text-green-600">"vantagem competitiva e economia fiscal"</strong>.
                 </p>
                 <p>
-                  <strong className="text-primary">A diferença está no time:</strong> Formado exclusivamente por profissionais que estruturaram operações bilionárias nas Big Four. Não são consultores comuns - são os mesmos especialistas que blindaram as maiores corporações do país.
+                  <strong className="text-primary">A diferença está no time:</strong> Formado exclusivamente por profissionais que estruturaram operações bilionárias nas Big Four e dominam as nuances da Reforma Tributária. Não são consultores comuns - são especialistas que antecipam cenários fiscais complexos.
                 </p>
                 <p>
-                  <strong className="text-primary">Personalização real:</strong> Não é marketing. Alocamos profissionais seniores dedicados ao seu projeto porque sua empresa merece soluções que realmente funcionam, não templates genéricos.
+                  <strong className="text-primary">Simulações precisas:</strong> Não trabalhamos com estimativas vagas. Nossos diagnósticos revelam exatamente como cada aspecto da Reforma impactará suas operações, com cálculos exatos para decisões seguras.
                 </p>
                 <p className="text-sm sm:text-base lg:text-lg font-semibold text-green-700 bg-green-50 p-3 sm:p-4 rounded-lg border-l-4 border-green-500">
-                  <strong>Compromisso com resultado:</strong> Se não identificarmos pelo menos R$ 100 mil em economia ou recuperação no diagnóstico gratuito, você não deve nada. Simples assim.
+                  <strong>Compromisso com resultado:</strong> Se não identificarmos pelo menos R$ 100 mil em economia ou oportunidades no novo cenário tributário durante o diagnóstico gratuito, você não deve nada. Simples assim.
                 </p>
               </div>
               <div className="mt-4 sm:mt-6 lg:mt-8 flex flex-col sm:flex-row gap-3 sm:gap-4">
-                <a href="https://api.whatsapp.com/send?phone=5512991019885&text=Olá%20Dr.%20Carlos,%20vim%20pelo%20site%20e%20preciso%20de%20advogado%20tributário." target="_blank" rel="noopener noreferrer" className="w-full sm:w-auto">
+                <a href="https://api.whatsapp.com/send?phone=5512991019885&text=Olá%20Dr.%20Carlos,%20vim%20pelo%20site%20e%20gostaria%20de%20um%20diagnóstico%20para%20a%20Reforma%20Tributária." target="_blank" rel="noopener noreferrer" className="w-full sm:w-auto">
                   <Button size="lg" className="btn w-full sm:w-auto text-sm sm:text-base px-4 sm:px-6 py-3">
                     <FaWhatsapp className="h-4 w-4 sm:h-5 sm:w-5 mr-2" />
-                    Conhecer Serviços
+                    Preparação para Reforma
                   </Button>
                 </a>
                 <Button size="lg" variant="outline" className="btn border-gray-300 text-gray-700 hover:bg-gray-100 hover:text-gray-900 w-full sm:w-auto text-sm sm:text-base px-4 sm:px-6 py-3">
-                  <Phone className="h-4 w-4 sm:h-5 sm:w-5 mr-2" />
-                  Diagnóstico Gratuito
+                  <Calculator className="h-4 w-4 sm:h-5 sm:w-5 mr-2" />
+                  Simulação de Impactos
                 </Button>
               </div>
             </div>
             <div className="about-image relative animate-scale-in order-1 lg:order-2">
               <img 
                 src={lawyerHero} 
-                alt="Equipe KARF7"
+                alt="Especialistas em Reforma Tributária"
                 className="rounded-xl sm:rounded-2xl shadow-elevated w-full object-cover h-[250px] sm:h-[300px] md:h-[400px] lg:h-[500px]"
               />
               <div className="absolute -bottom-2 -right-2 sm:-bottom-3 sm:-right-3 lg:-bottom-6 lg:-right-6 bg-primary text-primary-foreground p-2 sm:p-3 lg:p-4 rounded-lg sm:rounded-xl shadow-elevated">
                 <div className="text-center">
-                  <div className="text-sm sm:text-lg lg:text-2xl font-bold">Big 4</div>
-                  <div className="text-xs sm:text-sm">Experience</div>
+                  <div className="text-sm sm:text-lg lg:text-2xl font-bold">Reforma</div>
+                  <div className="text-xs sm:text-sm">Tributária</div>
                 </div>
               </div>
             </div>
@@ -739,33 +758,35 @@ const LawyerWebsite = () => {
       </section>
 
       {/* CTA Final - OTIMIZADO MOBILE */}
-      <section className="py-8 sm:py-12 lg:py-16 bg-gradient-hero text-white">
+      <section id="cta" className="py-8 sm:py-12 lg:py-16 bg-gradient-hero text-white">
         <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-6 text-center">
           <div className="contact-header animate-slide-up">
             <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold mb-3 sm:mb-4 lg:mb-6 px-2 leading-tight">
-              Transforme os Desafios Tributários em Oportunidades de Caixa
+              Pronto para se preparar para a Reforma Tributária?
             </h2>
             <p className="text-sm sm:text-base md:text-lg lg:text-xl mb-4 sm:mb-6 lg:mb-8 text-blue-100 max-w-4xl mx-auto px-4">
-              Pare de perder dinheiro enquanto seus concorrentes economizam milhões com estratégia fiscal inteligente.
+              Agende um diagnóstico gratuito e descubra como podemos ajudar sua empresa a simular impactos, adaptar processos e maximizar oportunidades no novo cenário tributário.
             </p>
             
-            <div className="contact-form flex flex-col gap-3 sm:gap-4 justify-center mb-4 sm:mb-6 lg:mb-8">
-              <a href="https://api.whatsapp.com/send?phone=5512991019885&text=Olá%20Dr.%20Carlos,%20vim%20pelo%20site%20e%20QUERO%20MEU%20DIAGNÓSTICO%20GRATUITO%20AGORA" target="_blank" rel="noopener noreferrer" className="w-full">
-                <Button size="lg" className="btn w-full text-sm sm:text-base lg:text-lg px-4 sm:px-6 py-3 sm:py-4 font-bold">
+            <div className="contact-form flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center mb-4 sm:mb-6 lg:mb-8">
+              <a href="https://api.whatsapp.com/send?phone=5512991019885&text=Olá%20Dr.%20Carlos,%20vim%20pelo%20site%20e%20gostaria%20de%20um%20diagnóstico%20para%20a%20Reforma%20Tributária." target="_blank" rel="noopener noreferrer" className="w-full sm:w-auto">
+                <Button size="lg" className="btn w-full sm:w-auto text-sm sm:text-base lg:text-lg px-4 sm:px-6 py-3 sm:py-4 font-bold">
                   <FaWhatsapp className="h-4 w-4 sm:h-5 sm:w-5 mr-2" />
-                  QUERO MEU DIAGNÓSTICO GRATUITO AGORA
+                  Agendar Diagnóstico Gratuito
+                </Button>
+              </a>
+              <a href="tel:+5512991019885" className="w-full sm:w-auto">
+                <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/20 w-full sm:w-auto text-sm sm:text-base px-4 sm:px-6 py-3 sm:py-4">
+                  <Phone className="h-4 w-4 sm:h-5 sm:w-5 mr-2" />
+                  Falar com Especialista
                 </Button>
               </a>
             </div>
             
-            {/* Subtítulos dos CTAs */}
-            <div className="flex flex-col gap-1 sm:gap-2 justify-center mb-6 sm:mb-8 text-xs sm:text-sm text-blue-200 px-4">
-              <span>(Descubra em 24h onde sua empresa está perdendo dinheiro)</span>
-              <span className="hidden sm:inline">(Empresas similares que já resolveram problemas parecidos)</span>
-            </div>
-            
-            {/* Garantias */}
-
+            {/* Garantia */}
+            <p className="text-xs sm:text-sm mt-4 sm:mt-6 text-white/80 cta-guarantee">
+              Garantia de satisfação: Se não identificarmos pelo menos R$ 100 mil em economia potencial com a Reforma Tributária no diagnóstico inicial, você não paga nada.
+            </p>
           </div>
         </div>
       </section>
@@ -780,24 +801,24 @@ const LawyerWebsite = () => {
                 <span className="text-base sm:text-lg lg:text-xl font-bold">KARF7</span>
               </div>
               <p className="text-xs sm:text-sm lg:text-base text-gray-300 leading-relaxed">
-                Consultoria Tributária especializada em alta complexidade corporativa.
+                Especialistas em Reforma Tributária com diagnósticos precisos e estratégias personalizadas.
               </p>
             </div>
             <div className="space-y-2 sm:space-y-3 lg:space-y-4">
               <h3 className="text-sm sm:text-base lg:text-lg font-bold">Serviços</h3>
               <ul className="space-y-1 sm:space-y-2 text-xs sm:text-sm lg:text-base text-gray-300">
-                <li>Compliance Tributário</li>
+                <li>Simulação de Impactos</li>
                 <li>Planejamento Tributário</li>
-                <li>Recuperação de Créditos</li>
-                <li>Reforma Tributária</li>
+                <li>Compliance Tributário</li>
+                <li>Preparação para Reforma</li>
               </ul>
             </div>
             <div className="space-y-2 sm:space-y-3 lg:space-y-4">
-              <h3 className="text-sm sm:text-base lg:text-lg font-bold">Contato</h3>
+              <h3 className="text-sm sm:text-base lg:text-lg font-bold">Agende seu Diagnóstico</h3>
               <div className="space-y-1 sm:space-y-2 text-xs sm:text-sm lg:text-base text-gray-300">
                 <div className="flex items-center">
                   <Phone className="h-3 w-3 sm:h-4 sm:w-4 mr-2 flex-shrink-0" />
-                  <span>+55 12 98171-3398</span>
+                  <span>+55 12 99101-9885</span>
                 </div>
                 <div className="flex items-center">
                   <Mail className="h-3 w-3 sm:h-4 sm:w-4 mr-2 flex-shrink-0" />
@@ -805,22 +826,22 @@ const LawyerWebsite = () => {
                 </div>
                 <div className="flex items-center">
                   <MapPin className="h-3 w-3 sm:h-4 sm:w-4 mr-2 flex-shrink-0" />
-                  <span>São José dos Campos, SP</span>
+                  <span>São Paulo, SP</span>
                 </div>
               </div>
             </div>
             <div className="space-y-2 sm:space-y-3 lg:space-y-4">
               <h3 className="text-sm sm:text-base lg:text-lg font-bold">Horário</h3>
               <div className="text-xs sm:text-sm lg:text-base text-gray-300">
-                <p>Segunda a Sexta: 8h às 18h</p>
-                <p>Sábado: 8h às 12h</p>
-                <p>WhatsApp 24h</p>
+                <p>Segunda a Sexta: 9h às 18h</p>
+                <p>Sábado: 9h às 12h</p>
+                <p>Diagnósticos para Reforma Tributária em 24h</p>
               </div>
             </div>
           </div>
           <div className="border-t border-gray-700 pt-4 sm:pt-6 lg:pt-8 flex flex-col sm:flex-row justify-between items-center space-y-2 sm:space-y-0">
             <p className="text-xs sm:text-sm text-gray-400 text-center sm:text-left">
-              © 2024 KARF7. Todos os direitos reservados.
+              © 2024 KARF7 Consultoria Tributária. Todos os direitos reservados.
             </p>
             <div className="flex flex-col sm:flex-row space-y-1 sm:space-y-0 sm:space-x-4 lg:space-x-6 text-xs sm:text-sm text-gray-400">
               <a href="#" className="hover:text-white transition-colors text-center">Política de Privacidade</a>
@@ -832,10 +853,11 @@ const LawyerWebsite = () => {
 
       {/* WhatsApp Floating Button - OTIMIZADO MOBILE */}
       <a
-        href="https://api.whatsapp.com/send?phone=5512991019885&text=Olá%20Dr.%20Carlos,%20vim%20pelo%20site%20e%20preciso%20de%20advogado%20tributário."
+        href="https://api.whatsapp.com/send?phone=5512991019885&text=Olá%20Dr.%20Carlos,%20vim%20pelo%20site%20e%20gostaria%20de%20um%20diagnóstico%20para%20a%20Reforma%20Tributária."
         target="_blank"
         rel="noopener noreferrer"
         className="fixed bottom-3 right-3 sm:bottom-4 sm:right-4 lg:bottom-6 lg:right-6 bg-green-500 hover:bg-green-600 text-white p-2.5 sm:p-3 lg:p-4 rounded-full shadow-lg z-50 transition-all duration-300 pulse-animation"
+        aria-label="Agendar Diagnóstico para Reforma Tributária"
       >
         <FaWhatsapp className="h-4 w-4 sm:h-5 sm:w-5 lg:h-6 lg:w-6" />
       </a>
