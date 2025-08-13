@@ -468,6 +468,35 @@ All colors MUST be HSL.
     contain: layout;
   }
 
+  /* Melhorias específicas para mobile - CTA Section */
+  @media (max-width: 640px) {
+    .pain-cta {
+      margin-left: 0.5rem;
+      margin-right: 0.5rem;
+      padding: 1rem;
+    }
+    
+    .pain-cta h3 {
+      font-size: 0.875rem;
+      line-height: 1.5;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+    }
+    
+    .pain-cta .btn {
+      font-size: 0.75rem;
+      padding: 0.75rem 0.5rem;
+      white-space: normal;
+      height: auto;
+      min-height: 2.5rem;
+    }
+    
+    .pain-cta .btn span {
+      word-break: break-word;
+      hyphens: auto;
+    }
+  }
+
   /* Prevenir scroll horizontal em qualquer elemento */
   * {
     max-width: 100%;

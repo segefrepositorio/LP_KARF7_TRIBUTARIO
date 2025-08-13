@@ -598,14 +598,14 @@ const LawyerWebsite = () => {
           </div>
           
           {/* CTA da Solução */}
-          <div className="pain-cta text-center bg-primary/10 rounded-xl sm:rounded-2xl p-4 sm:p-6 lg:p-8">
-            <h3 className="text-lg sm:text-xl lg:text-2xl font-bold text-primary mb-3 sm:mb-4 px-2">
+          <div className="pain-cta text-center bg-primary/10 rounded-xl sm:rounded-2xl p-4 sm:p-6 lg:p-8 mx-2 sm:mx-0">
+            <h3 className="text-base sm:text-lg md:text-xl lg:text-2xl font-bold text-primary mb-4 sm:mb-6 px-2 leading-relaxed">
               Transformamos dados dispersos em informações estratégicas que geram decisões seguras e lucrativas.
             </h3>
             <a href="https://api.whatsapp.com/send?phone=5512991019885&text=Olá%20Dr.%20Carlos,%20vim%20pelo%20site%20e%20gostaria%20de%20um%20diagnóstico%20para%20a%20Reforma%20Tributária." target="_blank" rel="noopener noreferrer" className="w-full sm:w-auto inline-block">
-              <Button size="lg" className="btn w-full sm:w-auto text-sm sm:text-base lg:text-lg px-4 sm:px-6 py-3 sm:py-4">
-                <FaWhatsapp className="h-4 w-4 sm:h-5 sm:w-5 mr-2" />
-                Solicitar Diagnóstico para Reforma Tributária
+              <Button size="lg" className="btn w-full sm:w-auto text-xs sm:text-sm md:text-base lg:text-lg px-3 sm:px-4 md:px-6 py-3 sm:py-4 leading-tight">
+                <FaWhatsapp className="h-4 w-4 sm:h-5 sm:w-5 mr-1 sm:mr-2 flex-shrink-0" />
+                <span className="break-words">Solicitar Diagnóstico para Reforma Tributária</span>
               </Button>
             </a>
           </div>
