@@ -27,275 +27,39 @@ import {
   useIsMobile,
   useIntersectionObserver,
 } from '@/hooks/useLazyAnimations'
+import { useGSAPAnimations } from '@/hooks/useGSAPAnimations'
 import PerformanceOptimizer from './PerformanceOptimizer'
 import karfLogo from '@/assets/karflogo.png'
 
 // Componentes lazy removidos temporariamente - seções não existem
 
 const LawyerWebsite = () => {
-  const heroTitleRef = useRef(null)
-  const heroSubtitleRef = useRef(null)
-  const heroButtonRef = useRef(null)
   const heroSectionRef = useRef(null)
 
-  // Hooks otimizados
-  const { isLoaded, gsap, ScrollReveal } = useLazyAnimations()
+  // Hooks otimizados - integrando o novo hook GSAP
+  const { isLoaded, gsap } = useLazyAnimations()
   const isMobile = useIsMobile()
   const isHeroVisible = useIntersectionObserver(heroSectionRef, {
     threshold: 0.1,
   })
 
+  // Hook customizado para animações GSAP com refs otimizadas
+  const { heroTitleRef, heroSubtitleRef, heroButtonRef, heroAvatarRef } = useGSAPAnimations()
+
   useEffect(() => {
+    // O hook useGSAPAnimations agora gerencia todas as animações GSAP/ScrollTrigger
+    // Todas as seções agora estão cobertas por GSAP via useGSAPAnimations hook
     try {
       // Só executar animações quando as bibliotecas estiverem carregadas
-      if (!isLoaded || !gsap || !ScrollReveal) return
+      if (!isLoaded || !gsap) return
 
-      // Configuração inicial dos elementos para GSAP - CORRIGIDA
-      if (
-        heroTitleRef.current &&
-        heroSubtitleRef.current &&
-        heroButtonRef.current
-      ) {
-        // Timeline de animações GSAP - MAIS RÁPIDA E DIRETA
-        const tl = gsap.timeline({ delay: 0.5 }) // Pequeno delay para garantir que a página carregou
-
-        // Configurar estado inicial dos elementos
-        gsap.set(
-          [
-            heroTitleRef.current,
-            heroSubtitleRef.current,
-            heroButtonRef.current,
-          ],
-          {
-            opacity: 0,
-            y: isMobile ? 20 : 30,
-          }
-        )
-
-        // Animação do H1
-        tl.to(heroTitleRef.current, {
-          opacity: 1,
-          y: 0,
-          duration: isMobile ? 0.6 : 0.8,
-          ease: 'power2.out',
-        })
-          // Animação do subtítulo
-          .to(
-            heroSubtitleRef.current,
-            {
-              opacity: 1,
-              y: 0,
-              duration: isMobile ? 0.5 : 0.7,
-              ease: 'power2.out',
-            },
-            '-=0.4'
-          )
-          // Animação do botão
-          .to(
-            heroButtonRef.current,
-            {
-              opacity: 1,
-              y: 0,
-              scale: 1,
-              duration: isMobile ? 0.4 : 0.6,
-              ease: 'back.out(1.2)',
-            },
-            '-=0.3'
-          )
-      }
-
-      // Configuração do ScrollReveal - CORRIGIDA
-      if (!ScrollReveal || typeof ScrollReveal !== 'function') {
-        console.warn('ScrollReveal não está disponível')
-        return
-      }
-
-      const sr = ScrollReveal({
-        distance: isMobile ? '20px' : '30px',
-        duration: isMobile ? 400 : 600,
-        opacity: 0,
-        reset: false,
-        easing: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)',
-        viewFactor: isMobile ? 0.15 : 0.2,
-        mobile: true,
-        // Otimizações de performance
-        beforeReveal: function (domEl) {
-          domEl.style.willChange = 'transform, opacity'
-        },
-        afterReveal: function (domEl) {
-          domEl.style.willChange = 'auto'
-        },
-      })
-
-      // Hero Section - OTIMIZADO PARA VELOCIDADE
-      sr.reveal('.hero-title', {
-        delay: 50,
-        origin: 'bottom',
-        duration: isMobile ? 400 : 600,
-      })
-      sr.reveal('.hero-subtitle', {
-        delay: 100,
-        origin: 'bottom',
-        duration: isMobile ? 300 : 500,
-      })
-      sr.reveal('.hero-button', {
-        delay: 150,
-        origin: 'bottom',
-        scale: 0.95,
-        duration: isMobile ? 300 : 400,
-      })
-      sr.reveal('.hero-cards', {
-        delay: 200,
-        interval: isMobile ? 50 : 100,
-        origin: 'bottom',
-        duration: isMobile ? 400 : 600,
-      })
-      sr.reveal('.hero-reviews', {
-        delay: 250,
-        origin: 'bottom',
-        duration: isMobile ? 300 : 500,
-      })
-
-      // Services Section - Carregamento tardio
-      sr.reveal('.services-header', { delay: 100, origin: 'top' })
-      sr.reveal('.service-card', {
-        delay: 200,
-        interval: isMobile ? 100 : 200,
-        origin: 'bottom',
-        scale: 0.95,
-      })
-
-      // Pain Points Section
-      sr.reveal('.pain-header', { delay: 100, origin: 'top' })
-      sr.reveal('.pain-card', {
-        delay: 200,
-        interval: 150,
-        origin: 'left',
-        distance: '80px',
-      })
-      sr.reveal('.pain-cta', { delay: 300, origin: 'bottom', scale: 0.9 })
-
-      // Testimonials Section
-      sr.reveal('.testimonials-header', { delay: 100, origin: 'top' })
-      sr.reveal('.testimonial-card', {
-        delay: 200,
-        interval: 100,
-        origin: 'bottom',
-        rotate: { x: 0, y: 0, z: 5 },
-      })
-
-      // Process Section
-      sr.reveal('.process-header', { delay: 100, origin: 'top' })
-      sr.reveal('.process-step', {
-        delay: 200,
-        interval: 200,
-        origin: 'bottom',
-        distance: '40px',
-      })
-
-      // Benefits Section
-      sr.reveal('.benefits-header', { delay: 100, origin: 'top' })
-      sr.reveal('.benefit-item', {
-        delay: 200,
-        interval: 100,
-        origin: 'right',
-        distance: '60px',
-      })
-
-      // About Section
-      sr.reveal('.about-content', {
-        delay: 100,
-        origin: 'left',
-        distance: '80px',
-      })
-      sr.reveal('.about-image', {
-        delay: 200,
-        origin: 'right',
-        distance: '80px',
-      })
-
-      // Contact Section
-      sr.reveal('.contact-header', { delay: 100, origin: 'top' })
-      sr.reveal('.contact-info', {
-        delay: 200,
-        interval: 150,
-        origin: 'bottom',
-      })
-      sr.reveal('.contact-form', { delay: 300, origin: 'bottom', scale: 0.95 })
-
-      // Footer
-      sr.reveal('.footer-content', {
-        delay: 100,
-        origin: 'bottom',
-        distance: '30px',
-      })
-
-      // Animações GSAP para hover effects - OTIMIZADO PARA PERFORMANCE
-      const cards = document.querySelectorAll('.hover-lift')
-      cards.forEach((card) => {
-        // Configurar will-change para performance
-        ;(card as HTMLElement).style.willChange = 'transform'
-
-        card.addEventListener('mouseenter', () => {
-          gsap.to(card, {
-            y: -6,
-            duration: 0.25,
-            ease: 'power2.out',
-            force3D: true, // Forçar aceleração de hardware
-            boxShadow: '0 15px 30px rgba(0,0,0,0.1)',
-          })
-        })
-
-        card.addEventListener('mouseleave', () => {
-          gsap.to(card, {
-            y: 0,
-            duration: 0.25,
-            ease: 'power2.out',
-            force3D: true,
-            boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
-          })
-        })
-      })
-
-      // Animação de botões - OTIMIZADO PARA PERFORMANCE
-      const buttons = document.querySelectorAll('button, .btn')
-      buttons.forEach((button) => {
-        // Configurar will-change para performance
-        ;(button as HTMLElement).style.willChange = 'transform'
-
-        button.addEventListener('mouseenter', () => {
-          gsap.to(button, {
-            y: -2,
-            duration: 0.15,
-            ease: 'power2.out',
-            force3D: true,
-            boxShadow: '0 6px 16px rgba(0,0,0,0.12)',
-          })
-        })
-
-        button.addEventListener('mouseleave', () => {
-          gsap.to(button, {
-            y: 0,
-            duration: 0.15,
-            ease: 'power2.out',
-            force3D: true,
-            boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
-          })
-        })
-      })
-
-      // Cleanup
-      return () => {
-        try {
-          sr.destroy()
-        } catch (error) {
-          console.warn('Erro ao destruir ScrollReveal:', error)
-        }
-      }
+      // Todas as seções agora estão cobertas por GSAP/ScrollTrigger via useGSAPAnimations
+      // Removemos o ScrollReveal para evitar duplicidade de triggers
+      return () => {}
     } catch (error) {
       console.warn('Erro nas animações:', error)
     }
-  }, [isLoaded, gsap, ScrollReveal, isMobile, isHeroVisible])
+  }, [isLoaded, gsap, isHeroVisible])
 
   // Preload de recursos críticos
   useEffect(() => {
