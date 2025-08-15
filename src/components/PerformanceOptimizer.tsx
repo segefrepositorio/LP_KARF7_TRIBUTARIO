@@ -8,16 +8,11 @@ const PerformanceOptimizer = () => {
     // Otimizações de performance no carregamento
     const optimizePerformance = () => {
       // Remover unused CSS classes após carregamento
-      const removeUnusedStyles = () => {
-        const stylesheets = document.querySelectorAll('link[rel="stylesheet"]')
-        stylesheets.forEach((sheet) => {
-          if (!(sheet instanceof HTMLLinkElement)) return
-          const href = sheet.href || ''
-          if (href && !href.includes('tailwind') && !href.includes('main')) {
-            sheet.remove()
-          }
-        })
-      }
+      // Nota: removi a rotina que eliminava stylesheets automaticamente pois
+      // em produção os nomes dos arquivos são hashed (ex: assets/index-abc.css)
+      // e a checagem anterior acabava removendo o CSS principal após alguns
+      // segundos, fazendo o site perder estilos. Se necessário, podemos
+      // implementar uma estratégia segura baseada em data-attributes.
 
       // Lazy load de fontes não críticas
       const loadNonCriticalFonts = () => {
@@ -58,7 +53,6 @@ const PerformanceOptimizer = () => {
 
       // Executar otimizações após carregamento
       setTimeout(() => {
-        removeUnusedStyles()
         loadNonCriticalFonts()
         optimizeImages()
       }, 2000)
