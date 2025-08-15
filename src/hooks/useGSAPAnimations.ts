@@ -193,21 +193,8 @@ export const useGSAPAnimations = () => {
             })
           })
 
-          // DEPOIMENTOS COM FADE SUAVE
-          const testimonials = document.querySelectorAll('.testimonial-card')
-          if (testimonials.length > 0) {
-            ScrollTrigger.batch(testimonials, {
-              onEnter: (elements) => {
-                gsap.from(elements, {
-                  opacity: 0,
-                  duration: 1.2,
-                  stagger: 0.2,
-                  ease: 'power1.out',
-                })
-              },
-              start: 'top 85%',
-            })
-          }
+          // DEPOIMENTOS COM FADE SUAVE - REMOVIDO - causava conflito
+          // testimonials estão cobertos pelo createCardBatch
 
           // COUNTERS ANIMADOS
           const animateCounter = (element: Element, target: number) => {
