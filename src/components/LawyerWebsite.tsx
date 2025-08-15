@@ -27,6 +27,7 @@ import {
   useIsMobile,
   useIntersectionObserver,
 } from '@/hooks/useLazyAnimations'
+import { useGSAPAnimations } from '@/hooks/useGSAPAnimations'
 import PerformanceOptimizer from './PerformanceOptimizer'
 import karfLogo from '@/assets/karflogo.png'
 
@@ -44,6 +45,9 @@ const LawyerWebsite = () => {
   const isHeroVisible = useIntersectionObserver(heroSectionRef, {
     threshold: 0.1,
   })
+
+  // Ativa animações GSAP globais sem alterar estrutura
+  useGSAPAnimations()
 
   useEffect(() => {
     try {
