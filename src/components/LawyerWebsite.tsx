@@ -37,7 +37,7 @@ const LawyerWebsite = () => {
   const heroSectionRef = useRef(null)
 
   // Hooks otimizados - integrando o novo hook GSAP
-  const { isLoaded, gsap, ScrollReveal } = useLazyAnimations()
+  const { isLoaded, gsap } = useLazyAnimations()
   const isMobile = useIsMobile()
   const isHeroVisible = useIntersectionObserver(heroSectionRef, {
     threshold: 0.1,
@@ -48,88 +48,18 @@ const LawyerWebsite = () => {
 
   useEffect(() => {
     // O hook useGSAPAnimations agora gerencia todas as animações GSAP/ScrollTrigger
-    // Mantendo apenas animações que não conflitam com o novo sistema
+    // Todas as seções agora estão cobertas por GSAP via useGSAPAnimations hook
     try {
       // Só executar animações quando as bibliotecas estiverem carregadas
-      if (!isLoaded || !gsap || !ScrollReveal) return
+      if (!isLoaded || !gsap) return
 
-      // Configuração do ScrollReveal apenas para elementos que não são gerenciados pelo GSAP hook
-      if (!ScrollReveal || typeof ScrollReveal !== 'function') {
-        console.warn('ScrollReveal não está disponível')
-        return
-      }
-
-      const sr = ScrollReveal({
-        distance: isMobile ? '20px' : '30px',
-        duration: isMobile ? 400 : 600,
-        opacity: 0,
-        reset: false,
-        easing: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)',
-        viewFactor: isMobile ? 0.15 : 0.2,
-        mobile: true,
-        // Otimizações de performance
-        beforeReveal: function (domEl) {
-          domEl.style.willChange = 'transform, opacity'
-        },
-        afterReveal: function (domEl) {
-          domEl.style.willChange = 'auto'
-        },
-      })
-
-      // Animações específicas não cobertas pelo hook GSAP
-      sr.reveal('.hero-reviews', {
-        delay: 250,
-        origin: 'bottom',
-        duration: isMobile ? 300 : 500,
-      })
-
-      // Headers de seções (complementar ao GSAP)
-      sr.reveal('.services-header', { delay: 100, origin: 'top' })
-      sr.reveal('.pain-header', { delay: 100, origin: 'top' })
-      sr.reveal('.testimonials-header', { delay: 100, origin: 'top' })
-      sr.reveal('.process-header', { delay: 100, origin: 'top' })
-      sr.reveal('.benefits-header', { delay: 100, origin: 'top' })
-
-      // About Section
-      sr.reveal('.about-content', {
-        delay: 100,
-        origin: 'left',
-        distance: '80px',
-      })
-      sr.reveal('.about-image', {
-        delay: 200,
-        origin: 'right',
-        distance: '80px',
-      })
-
-      // Contact Section
-      sr.reveal('.contact-header', { delay: 100, origin: 'top' })
-      sr.reveal('.contact-info', {
-        delay: 200,
-        interval: 150,
-        origin: 'bottom',
-      })
-      sr.reveal('.contact-form', { delay: 300, origin: 'bottom', scale: 0.95 })
-
-      // Footer
-      sr.reveal('.footer-content', {
-        delay: 100,
-        origin: 'bottom',
-        distance: '30px',
-      })
-
-      // Cleanup
-      return () => {
-        try {
-          sr.destroy()
-        } catch (error) {
-          console.warn('Erro ao destruir ScrollReveal:', error)
-        }
-      }
+      // Todas as seções agora estão cobertas por GSAP/ScrollTrigger via useGSAPAnimations
+      // Removemos o ScrollReveal para evitar duplicidade de triggers
+      return () => {}
     } catch (error) {
       console.warn('Erro nas animações:', error)
     }
-  }, [isLoaded, gsap, ScrollReveal, isMobile, isHeroVisible])
+  }, [isLoaded, gsap, isHeroVisible])
 
   // Preload de recursos críticos
   useEffect(() => {

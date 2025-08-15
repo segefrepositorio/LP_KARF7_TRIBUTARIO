@@ -263,6 +263,150 @@ export const useGSAPAnimations = () => {
             })
           }
 
+          // HEADERS DE SEÇÕES - Animação de entrada desde o topo
+          const sectionHeaders = document.querySelectorAll('.services-header, .pain-header, .testimonials-header, .process-header, .benefits-header, .contact-header')
+          sectionHeaders.forEach((header) => {
+            ScrollTrigger.create({
+              trigger: header,
+              start: 'top 85%',
+              onEnter: () => {
+                gsap.from(header, {
+                  opacity: 0,
+                  y: -30,
+                  duration: 0.7,
+                  ease: 'power2.out',
+                })
+              },
+              once: true,
+            })
+          })
+
+          // HERO REVIEWS - Animação suave de baixo
+          const heroReviews = document.querySelector('.hero-reviews')
+          if (heroReviews) {
+            ScrollTrigger.create({
+              trigger: heroReviews,
+              start: 'top 90%',
+              onEnter: () => {
+                gsap.from(heroReviews, {
+                  opacity: 0,
+                  y: 30,
+                  duration: 0.6,
+                  ease: 'power1.out',
+                })
+              },
+              once: true,
+            })
+          }
+
+          // ABOUT SECTION - Animação lateral
+          const aboutContent = document.querySelector('.about-content')
+          const aboutImage = document.querySelector('.about-image')
+          
+          if (aboutContent) {
+            ScrollTrigger.create({
+              trigger: aboutContent,
+              start: 'top 80%',
+              onEnter: () => {
+                gsap.from(aboutContent, {
+                  opacity: 0,
+                  x: -60,
+                  duration: 0.8,
+                  ease: 'power2.out',
+                })
+              },
+              once: true,
+            })
+          }
+
+          if (aboutImage) {
+            ScrollTrigger.create({
+              trigger: aboutImage,
+              start: 'top 80%',
+              onEnter: () => {
+                gsap.from(aboutImage, {
+                  opacity: 0,
+                  x: 60,
+                  duration: 0.8,
+                  ease: 'power2.out',
+                })
+              },
+              once: true,
+            })
+          }
+
+          // CONTACT SECTION - Animação escalonada
+          const contactInfo = document.querySelectorAll('.contact-info')
+          const contactForm = document.querySelector('.contact-form')
+          
+          if (contactInfo.length > 0) {
+            ScrollTrigger.batch(contactInfo, {
+              onEnter: (elements) => {
+                gsap.from(elements, {
+                  opacity: 0,
+                  y: 40,
+                  duration: 0.7,
+                  stagger: 0.15,
+                  ease: 'power2.out',
+                })
+              },
+              start: 'top 85%',
+            })
+          }
+
+          if (contactForm) {
+            ScrollTrigger.create({
+              trigger: contactForm,
+              start: 'top 80%',
+              onEnter: () => {
+                gsap.from(contactForm, {
+                  opacity: 0,
+                  y: 30,
+                  scale: 0.95,
+                  duration: 0.8,
+                  ease: 'back.out(1.2)',
+                })
+              },
+              once: true,
+            })
+          }
+
+          // FOOTER - Animação suave de entrada
+          const footerContent = document.querySelector('.footer-content')
+          if (footerContent) {
+            ScrollTrigger.create({
+              trigger: footerContent,
+              start: 'top 85%',
+              onEnter: () => {
+                gsap.from(footerContent, {
+                  opacity: 0,
+                  y: 30,
+                  duration: 0.7,
+                  ease: 'power1.out',
+                })
+              },
+              once: true,
+            })
+          }
+
+          // CTA GUARANTEE - Animação destacada
+          const ctaGuarantee = document.querySelector('.cta-guarantee')
+          if (ctaGuarantee) {
+            ScrollTrigger.create({
+              trigger: ctaGuarantee,
+              start: 'top 85%',
+              onEnter: () => {
+                gsap.from(ctaGuarantee, {
+                  opacity: 0,
+                  scale: 0.9,
+                  duration: 0.8,
+                  ease: 'back.out(1.3)',
+                })
+              },
+              once: true,
+            })
+          }
+
         }) // Fim do contexto GSAP
 
         // Guardar referências dos ScrollTriggers para limpeza
