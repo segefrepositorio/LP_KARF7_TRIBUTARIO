@@ -69,7 +69,7 @@ const LawyerWebsite = () => {
           {
             opacity: 0,
             y: isMobile ? 20 : 30,
-          },
+          }
         )
 
         // Animação do H1
@@ -88,7 +88,7 @@ const LawyerWebsite = () => {
               duration: isMobile ? 0.5 : 0.7,
               ease: 'power2.out',
             },
-            '-=0.4',
+            '-=0.4'
           )
           // Animação do botão
           .to(
@@ -100,7 +100,7 @@ const LawyerWebsite = () => {
               duration: isMobile ? 0.4 : 0.6,
               ease: 'back.out(1.2)',
             },
-            '-=0.3',
+            '-=0.3'
           )
       }
 
@@ -234,7 +234,7 @@ const LawyerWebsite = () => {
       const cards = document.querySelectorAll('.hover-lift')
       cards.forEach((card) => {
         // Configurar will-change para performance
-        card.style.willChange = 'transform'
+        ;(card as HTMLElement).style.willChange = 'transform'
 
         card.addEventListener('mouseenter', () => {
           gsap.to(card, {
@@ -261,7 +261,7 @@ const LawyerWebsite = () => {
       const buttons = document.querySelectorAll('button, .btn')
       buttons.forEach((button) => {
         // Configurar will-change para performance
-        button.style.willChange = 'transform'
+        ;(button as HTMLElement).style.willChange = 'transform'
 
         button.addEventListener('mouseenter', () => {
           gsap.to(button, {
@@ -306,7 +306,8 @@ const LawyerWebsite = () => {
 
     // Preload do logo
     const logoImg = new Image()
-    logoImg.src = '/images/karflogo.png'
+    // Use o asset importado para garantir o caminho correto no bundle
+    logoImg.src = karfLogo
 
     // Preconnect para recursos externos
     const preconnectLinks = [

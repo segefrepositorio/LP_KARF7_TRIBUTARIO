@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 import { Helmet } from 'react-helmet-async'
+import karfLogo from '@/assets/karflogo.png'
 
 // Componente para otimizações de performance
 const PerformanceOptimizer = () => {
@@ -10,11 +11,9 @@ const PerformanceOptimizer = () => {
       const removeUnusedStyles = () => {
         const stylesheets = document.querySelectorAll('link[rel="stylesheet"]')
         stylesheets.forEach((sheet) => {
-          if (
-            sheet.href &&
-            !sheet.href.includes('tailwind') &&
-            !sheet.href.includes('main')
-          ) {
+          if (!(sheet instanceof HTMLLinkElement)) return
+          const href = sheet.href || ''
+          if (href && !href.includes('tailwind') && !href.includes('main')) {
             sheet.remove()
           }
         })
@@ -51,7 +50,7 @@ const PerformanceOptimizer = () => {
           },
           {
             rootMargin: '50px',
-          },
+          }
         )
 
         images.forEach((img) => imageObserver.observe(img))
@@ -107,12 +106,7 @@ const PerformanceOptimizer = () => {
       <link rel="dns-prefetch" href="https://api.whatsapp.com" />
 
       {/* Preload de recursos críticos */}
-      <link
-        rel="preload"
-        href="/images/KARF7_LOGO.png"
-        as="image"
-        type="image/png"
-      />
+      <link rel="preload" href={karfLogo} as="image" type="image/png" />
 
       {/* Critical CSS inline */}
       <style>{`
@@ -184,7 +178,7 @@ const PerformanceOptimizer = () => {
         content="Diagnóstico completo e simulações precisas sob as novas regras tributárias. 20+ anos de experiência."
       />
       <meta property="og:type" content="website" />
-      <meta property="og:image" content="/images/KARF7_LOGO.png" />
+      <meta property="og:image" content={karfLogo} />
 
       {/* Twitter Card */}
       <meta name="twitter:card" content="summary_large_image" />
