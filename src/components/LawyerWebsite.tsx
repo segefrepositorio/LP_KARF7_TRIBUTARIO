@@ -540,7 +540,7 @@ const LawyerWebsite = () => {
               ref={heroButtonRef}
               className="space-y-4 sm:space-y-6 lg:space-y-8 px-4"
             >
-              <div className="flex flex-col sm:flex-row gap-4 justify-start sm:justify-center items-center max-w-xs">
+              <div className="flex flex-col sm:flex-row gap-4 justify-center items-center max-w-xs w-full mx-auto">
                 <a
                   href="https://api.whatsapp.com/send?phone=5512991019885&text=Olá%20Dr.%20Carlos,%20vim%20pelo%20site%20e%20gostaria%20de%20um%20diagnóstico%20para%20a%20Reforma%20Tributária."
                   target="_blank"
