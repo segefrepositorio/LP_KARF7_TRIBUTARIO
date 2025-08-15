@@ -21,7 +21,7 @@ import {
   Zap,
 } from 'lucide-react'
 import { FaWhatsapp } from 'react-icons/fa'
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import {
   useLazyAnimations,
   useIsMobile,
