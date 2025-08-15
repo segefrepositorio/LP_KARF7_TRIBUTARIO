@@ -4,9 +4,10 @@ const STATIC_CACHE = 'karf7-static-v1.0.0';
 const DYNAMIC_CACHE = 'karf7-dynamic-v1.0.0';
 
 // Recursos para cache estático (críticos)
+// Nota: não pré-cacheamos '/' nem '/index.html' para evitar servir uma
+// versão em cache do documento que poderia conter head antigo e interferir
+// com CSS injetado dinamicamente pelo bundle (Vite injetando CSS via JS).
 const STATIC_ASSETS = [
-  '/',
-  '/index.html',
   '/images/KARF7_LOGO.png',
   '/manifest.json'
 ];
@@ -71,19 +72,27 @@ self.addEventListener('activate', (event) => {
 self.addEventListener('fetch', (event) => {
   const { request } = event;
   const url = new URL(request.url);
-  
+
   // Ignorar requisições não-GET
   if (request.method !== 'GET') return;
-  
+
   // Ignorar requisições de extensões do browser
   if (url.protocol === 'chrome-extension:' || url.protocol === 'moz-extension:') return;
-  
+
+  // Tratar navegações/document requests com Network First para garantir
+  // que sempre recebemos a versão mais recente do HTML (evita conflitos com
+  // CSS injetado pelo bundle que poderia desaparecer se servirmos um HTML em cache).
+  if (request.mode === 'navigate' || request.destination === 'document') {
+    event.respondWith(networkFirst(request, DYNAMIC_CACHE));
+    return;
+  }
+
   // Estratégia de cache baseada no tipo de recurso
   if (isStaticAsset(url)) {
-    // Cache First para recursos estáticos
+    // Cache First para arquivos estáticos em /assets/ ou arquivos js/css
     event.respondWith(cacheFirst(request, STATIC_CACHE));
   } else if (isImageAsset(url)) {
-    // Cache First para imagens
+    // Cache First para imagens (dinâmico)
     event.respondWith(cacheFirst(request, DYNAMIC_CACHE));
   } else if (isFontAsset(url)) {
     // Cache First para fontes
