@@ -47,7 +47,7 @@ const LawyerWebsite = () => {
   })
 
   // Ativa animações GSAP globais sem alterar estrutura
-  useGSAPAnimations() // Reativado sem conflitos do hero
+  useGSAPAnimations() // Reativado com tratamento de erro melhorado
 
   useEffect(() => {
     try {

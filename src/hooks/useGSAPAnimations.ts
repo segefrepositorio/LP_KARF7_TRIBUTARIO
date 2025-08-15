@@ -18,6 +18,12 @@ export const useGSAPAnimations = () => {
         const gsap = gsapModule.gsap || gsapModule.default || gsapModule;
         const ScrollTrigger = stModule.default || stModule.ScrollTrigger;
 
+        // Verificar se GSAP foi carregado corretamente
+        if (!gsap || !ScrollTrigger) {
+          console.warn('GSAP ou ScrollTrigger não foram carregados corretamente');
+          return;
+        }
+
         // Registrar plugin
         gsap.registerPlugin(ScrollTrigger);
         stRef.current = ScrollTrigger;
@@ -196,7 +202,9 @@ export const useGSAPAnimations = () => {
         isInitialized.current = true;
 
       } catch (error) {
-        console.warn('Erro ao carregar animações GSAP:', error);
+        console.error('Erro crítico ao carregar animações GSAP:', error);
+        // Não quebrar a aplicação, apenas logar o erro
+        isInitialized.current = true; // Marcar como inicializado para evitar loops
       }
     };
 
