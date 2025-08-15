@@ -24,45 +24,8 @@ export const useGSAPAnimations = () => {
 
         // Criar contexto GSAP para limpeza automática
         contextRef.current = gsap.context(() => {
-          // HERO SECTION - Timeline inicial
-          const heroElements = {
-            avatar: '.hero-avatar',
-            heading: '.hero-heading, .hero-title',
-            sub: '.hero-sub, .hero-subtitle',
-            cta: '.hero-cta, .hero-button'
-          };
-
-          // Verificar se elementos existem antes de animar
-          const existingHeroElements = Object.entries(heroElements)
-            .filter(([_, selector]) => document.querySelector(selector as string))
-            .map(([key, selector]) => ({ key, selector, element: document.querySelector(selector as string) }));
-
-          if (existingHeroElements.length > 0) {
-            const heroTl = gsap.timeline({ delay: 0.3 });
-
-            // Estados iniciais
-            existingHeroElements.forEach(({ selector }) => {
-              gsap.set(selector as string, {
-                opacity: 0,
-                y: 30,
-                scale: 0.95
-              });
-            });
-
-            // Ordem desejada: avatar -> heading -> sub -> cta
-            const order = ['avatar', 'heading', 'sub', 'cta'];
-            order.forEach((name, idx) => {
-              const item = existingHeroElements.find(e => e.key === name);
-              if (!item) return;
-              heroTl.to(item.selector as string, {
-                opacity: 1,
-                y: 0,
-                scale: 1,
-                duration: 0.8,
-                ease: name === 'cta' ? 'back.out(1.2)' : 'power2.out'
-              }, idx * 0.15);
-            });
-          }
+          // HERO SECTION - Pular para evitar conflito com animações existentes
+          // As animações do hero já estão sendo gerenciadas pelo LawyerWebsite.tsx
 
           // SCROLL REVEAL COM SCROLLTRIGGER.BATCH - Cards e seções
           const revealElements = [
