@@ -107,19 +107,26 @@ export const useGSAPAnimations = () => {
             const elements = document.querySelectorAll(selector)
             if (elements.length === 0) return
 
+            // Estado inicial para evitar flicker
+            gsap.set(elements, {
+              autoAlpha: 0,
+              y: isMobile ? 20 : 40,
+              scale: 0.98,
+            })
+
             ScrollTrigger.batch(elements, {
               onEnter: (elements) => {
-                gsap.from(elements, {
-                  opacity: 0,
-                  y: 60,
-                  scale: 0.95,
+                gsap.to(elements, {
+                  autoAlpha: 1,
+                  y: 0,
+                  scale: 1,
                   duration: 0.8,
                   stagger: 0.15,
                   ease: 'power2.out',
                   force3D: true,
                 })
               },
-              start: 'top bottom-=100',
+              start: 'top 85%',
               refreshPriority: -1,
             })
           }
@@ -178,13 +185,16 @@ export const useGSAPAnimations = () => {
           // ANIMAÇÃO DE SEÇÕES GERAIS
           const sections = document.querySelectorAll('.section, .feature, [data-animate="reveal"]')
           sections.forEach((section) => {
+            // Estado inicial para evitar flash
+            gsap.set(section, { autoAlpha: 0, y: isMobile ? 20 : 40 })
+
             ScrollTrigger.create({
               trigger: section,
               start: 'top 80%',
               onEnter: () => {
-                gsap.from(section, {
-                  opacity: 0,
-                  y: 50,
+                gsap.to(section, {
+                  autoAlpha: 1,
+                  y: 0,
                   duration: 0.8,
                   ease: 'power2.out',
                 })
@@ -224,10 +234,16 @@ export const useGSAPAnimations = () => {
             const number = parseInt(text.replace(/\D/g, ''), 10)
             
             if (!isNaN(number) && number > 0) {
+              // estado inicial
+              gsap.set(counter, { autoAlpha: 0, y: isMobile ? 10 : 20 })
+
               ScrollTrigger.create({
                 trigger: counter,
                 start: 'top 80%',
-                onEnter: () => animateCounter(counter, number),
+                onEnter: () => {
+                  gsap.to(counter, { autoAlpha: 1, y: 0, duration: 0.6, ease: 'power2.out' })
+                  animateCounter(counter, number)
+                },
                 once: true,
               })
             }
@@ -236,11 +252,14 @@ export const useGSAPAnimations = () => {
           // BENEFIT ITEMS com animação da direita
           const benefitItems = document.querySelectorAll('.benefit-item')
           if (benefitItems.length > 0) {
+            // estados iniciais
+            gsap.set(benefitItems, { autoAlpha: 0, x: isMobile ? 30 : 60 })
+
             ScrollTrigger.batch(benefitItems, {
               onEnter: (elements) => {
-                gsap.from(elements, {
-                  opacity: 0,
-                  x: 60,
+                gsap.to(elements, {
+                  autoAlpha: 1,
+                  x: 0,
                   duration: 0.8,
                   stagger: 0.15,
                   ease: 'power2.out',
@@ -252,14 +271,17 @@ export const useGSAPAnimations = () => {
 
           // HEADERS DE SEÇÕES - Animação de entrada desde o topo
           const sectionHeaders = document.querySelectorAll('.services-header, .pain-header, .testimonials-header, .process-header, .benefits-header, .contact-header')
+          // estado inicial para headers
+          gsap.set(sectionHeaders, { autoAlpha: 0, y: -20 })
+
           sectionHeaders.forEach((header) => {
             ScrollTrigger.create({
               trigger: header,
-              start: 'top 85%',
+              start: 'top 90%',
               onEnter: () => {
-                gsap.from(header, {
-                  opacity: 0,
-                  y: -30,
+                gsap.to(header, {
+                  autoAlpha: 1,
+                  y: 0,
                   duration: 0.7,
                   ease: 'power2.out',
                 })
@@ -271,13 +293,16 @@ export const useGSAPAnimations = () => {
           // HERO REVIEWS - Animação suave de baixo
           const heroReviews = document.querySelector('.hero-reviews')
           if (heroReviews) {
+            // estado inicial
+            gsap.set(heroReviews, { autoAlpha: 0, y: isMobile ? 15 : 30 })
+
             ScrollTrigger.create({
               trigger: heroReviews,
               start: 'top 90%',
               onEnter: () => {
-                gsap.from(heroReviews, {
-                  opacity: 0,
-                  y: 30,
+                gsap.to(heroReviews, {
+                  autoAlpha: 1,
+                  y: 0,
                   duration: 0.6,
                   ease: 'power1.out',
                 })
@@ -291,13 +316,16 @@ export const useGSAPAnimations = () => {
           const aboutImage = document.querySelector('.about-image')
           
           if (aboutContent) {
+            // estado inicial
+            gsap.set(aboutContent, { autoAlpha: 0, x: isMobile ? -30 : -60 })
+
             ScrollTrigger.create({
               trigger: aboutContent,
               start: 'top 80%',
               onEnter: () => {
-                gsap.from(aboutContent, {
-                  opacity: 0,
-                  x: -60,
+                gsap.to(aboutContent, {
+                  autoAlpha: 1,
+                  x: 0,
                   duration: 0.8,
                   ease: 'power2.out',
                 })
@@ -307,13 +335,16 @@ export const useGSAPAnimations = () => {
           }
 
           if (aboutImage) {
+            // estado inicial
+            gsap.set(aboutImage, { autoAlpha: 0, x: isMobile ? 30 : 60 })
+
             ScrollTrigger.create({
               trigger: aboutImage,
               start: 'top 80%',
               onEnter: () => {
-                gsap.from(aboutImage, {
-                  opacity: 0,
-                  x: 60,
+                gsap.to(aboutImage, {
+                  autoAlpha: 1,
+                  x: 0,
                   duration: 0.8,
                   ease: 'power2.out',
                 })
@@ -327,11 +358,14 @@ export const useGSAPAnimations = () => {
           const contactForm = document.querySelector('.contact-form')
           
           if (contactInfo.length > 0) {
+            // estado inicial
+            gsap.set(contactInfo, { autoAlpha: 0, y: isMobile ? 20 : 40 })
+
             ScrollTrigger.batch(contactInfo, {
               onEnter: (elements) => {
-                gsap.from(elements, {
-                  opacity: 0,
-                  y: 40,
+                gsap.to(elements, {
+                  autoAlpha: 1,
+                  y: 0,
                   duration: 0.7,
                   stagger: 0.15,
                   ease: 'power2.out',
@@ -342,14 +376,17 @@ export const useGSAPAnimations = () => {
           }
 
           if (contactForm) {
+            // estado inicial
+            gsap.set(contactForm, { autoAlpha: 0, y: isMobile ? 15 : 30, scale: 0.97 })
+
             ScrollTrigger.create({
               trigger: contactForm,
               start: 'top 80%',
               onEnter: () => {
-                gsap.from(contactForm, {
-                  opacity: 0,
-                  y: 30,
-                  scale: 0.95,
+                gsap.to(contactForm, {
+                  autoAlpha: 1,
+                  y: 0,
+                  scale: 1,
                   duration: 0.8,
                   ease: 'back.out(1.2)',
                 })
@@ -361,13 +398,16 @@ export const useGSAPAnimations = () => {
           // FOOTER - Animação suave de entrada
           const footerContent = document.querySelector('.footer-content')
           if (footerContent) {
+            // estado inicial
+            gsap.set(footerContent, { autoAlpha: 0, y: isMobile ? 15 : 30 })
+
             ScrollTrigger.create({
               trigger: footerContent,
               start: 'top 85%',
               onEnter: () => {
-                gsap.from(footerContent, {
-                  opacity: 0,
-                  y: 30,
+                gsap.to(footerContent, {
+                  autoAlpha: 1,
+                  y: 0,
                   duration: 0.7,
                   ease: 'power1.out',
                 })
@@ -379,13 +419,16 @@ export const useGSAPAnimations = () => {
           // CTA GUARANTEE - Animação destacada
           const ctaGuarantee = document.querySelector('.cta-guarantee')
           if (ctaGuarantee) {
+            // estado inicial
+            gsap.set(ctaGuarantee, { autoAlpha: 0, scale: 0.95 })
+
             ScrollTrigger.create({
               trigger: ctaGuarantee,
               start: 'top 85%',
               onEnter: () => {
-                gsap.from(ctaGuarantee, {
-                  opacity: 0,
-                  scale: 0.9,
+                gsap.to(ctaGuarantee, {
+                  autoAlpha: 1,
+                  scale: 1,
                   duration: 0.8,
                   ease: 'back.out(1.3)',
                 })
